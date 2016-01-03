@@ -33,6 +33,7 @@ x64/
 *.tlh
 *.tmp
 *.log
+*.vs
 *.vspscc
 *.vssscc
 .builds
@@ -41,6 +42,7 @@ x64/
 ipch/
 *.aps
 *.ncb
+*.opendb
 *.opensdf
 *.sdf
 
