@@ -95,13 +95,15 @@ namespace LibSassNet
             {
                 IntPtr sassOptionsInternal = sass_context_get_options(this);
 
-                sass_option_set_precision(sassOptionsInternal, sassOptions.Precision);
                 sass_option_set_output_style(sassOptionsInternal, sassOptions.OutputStyle);
                 sass_option_set_source_comments(sassOptionsInternal, sassOptions.SourceComments);
                 sass_option_set_source_map_embed(sassOptionsInternal, sassOptions.SourceMapEmbed);
                 sass_option_set_omit_source_map_url(sassOptionsInternal, sassOptions.OmitSourceMapUrl);
                 sass_option_set_is_indented_syntax_src(sassOptionsInternal, sassOptions.IsIndentedSyntax);
                 sass_option_set_source_map_contents(sassOptionsInternal, sassOptions.SourceMapContents);
+
+                if (sassOptions.Precision.HasValue)
+                    sass_option_set_precision(sassOptionsInternal, sassOptions.Precision.Value);
 
                 if (!string.IsNullOrWhiteSpace(sassOptions.OutputPath))
                     sass_option_set_output_path(sassOptionsInternal, EncodeAsUtf8(sassOptions.OutputPath));

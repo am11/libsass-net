@@ -10,7 +10,7 @@
         /// <summary>
         /// Precision for fractional numbers.
         /// </summary>
-        public int Precision { get; set; }
+        public int? Precision { get; set; }
 
         /// <summary>
         /// Output style for the generated CSS code
