@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
 
 namespace LibSassNet
 {
     public partial class Sass
     {
+        private delegate IntPtr[] SassImporter(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
+
         private readonly SafeSassContextHandle _currentContext;
 
         /// <summary>

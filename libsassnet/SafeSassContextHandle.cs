@@ -132,6 +132,43 @@ namespace LibSassNet
                 }
 
                 SetAdditionalOptions(sassOptionsInternal, sassOptions);
+
+                if (sassOptions.CustomImports != null)
+                {
+                    int length = sassOptions.CustomImports.Length;
+                    IntPtr[] cImporters = sass_make_importer_list(sassOptions.CustomImports.Length);
+                    SassImporter importerCallback = SassImporterCallback;
+
+                    for (int i = 0; i < length; ++i)
+                    {
+                        cImporters[i] = sass_make_importer(importerCallback, length - i - 1, sassOptions.CustomImports[i]);
+                        sass_option_set_c_importers(sassOptionsInternal, cImporters);
+                    }
+                }
+            }
+
+            private IntPtr[] SassImporterCallback(IntPtr currrentPath, IntPtr callback, IntPtr compiler)
+            {
+                string url = PtrToString(currrentPath);
+                IntPtr previous = sass_compiler_get_last_import(compiler);
+                string previousPath = PtrToString(sass_import_get_abs_path(previous));
+                CustomImport customImportCallback = sass_importer_get_cookie(callback);
+                SassImport[] imports = customImportCallback(url, previousPath);
+                IntPtr[] entries = sass_make_import_list(imports.Length);
+
+                for (int i = 0; i < imports.Length; ++i)
+                {
+                    if (string.IsNullOrEmpty(imports[i].Error))
+                    {
+                        entries[i] = sass_make_import_entry(imports[i].Path, imports[i].Contents, imports[i].Map);
+                        continue;
+                    }
+
+                    entries[i] = sass_make_import_entry(string.Empty, string.Empty, string.Empty);
+                    sass_import_set_error(entries[i], imports[i].Error, -1, -1);
+                }
+
+                return entries;
             }
 
             protected virtual void SetAdditionalOptions(IntPtr sassOptionsInternal, SassOptions sassOptions)

@@ -1,5 +1,17 @@
-﻿namespace LibSassNet
+﻿using System;
+
+namespace LibSassNet
 {
+    public struct SassImport
+    {
+        public string Path { get; set; }
+        public string Contents { get; set; }
+        public string Map { get; set; }
+        public string Error { get; set; }
+    }
+
+    public delegate SassImport[] CustomImport(string url, string previousImport);
+
     public struct SassOptions
     {
         /// <summary>
@@ -108,19 +120,19 @@
         /// </summary>
         public string SourceMapRoot { get; set; }
 
-        ///// <summary>
-        ///// Custom functions that can be called from sccs code.
-        ///// </summary>
-        //public Sass_Function_List CustomFunction { get; set; }
+        /// <summary>
+        /// Custom functions that can be called from sccs code.
+        /// </summary>
+        //public IntPtr CustomFunction { get; set; }
 
-        ///// <summary>
-        ///// List of custom importers.
-        ///// </summary>
-        //public Sass_Importer_List CustomImporters { get; set; }
+        /// <summary>
+        /// List of custom importers.
+        /// </summary>
+        public CustomImport[] CustomImports { get; set; }
 
-        ///// <summary>
-        ///// List of custom headers.
-        ///// </summary>
-        //public Sass_Importer_List CustomHeaders { get; set; }
+        /// <summary>
+        /// List of custom headers.
+        /// </summary>
+        //public IntPtr CustomHeaders { get; set; }
     }
 }
