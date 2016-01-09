@@ -13,14 +13,14 @@ namespace LibSassNet
         [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
         internal abstract class SafeSassContextHandle : SafeHandle
         {
-            private SassImporter _importerCallback;
-            private readonly Dictionary<IntPtr, CustomImport> CallbackDictionary;
+            private SassImporterDelegate _importerCallback;
+            private readonly Dictionary<IntPtr, CustomImportDelegate> CallbackDictionary;
 
             internal SafeSassContextHandle(IntPtr method) :
                 base(IntPtr.Zero, true)
             {
                 handle = method;
-                CallbackDictionary = new Dictionary<IntPtr, CustomImport>();
+                CallbackDictionary = new Dictionary<IntPtr, CustomImportDelegate>();
             }
 
             public override bool IsInvalid
@@ -161,7 +161,7 @@ namespace LibSassNet
 
                     for (int i = 0; i < length; ++i)
                     {
-                        CustomImport customImporter = sassOptions.CustomImports[i];
+                        CustomImportDelegate customImporter = sassOptions.CustomImports[i];
                         IntPtr pointer = customImporter.Method.MethodHandle.GetFunctionPointer();
 
                         CallbackDictionary.Add(pointer, customImporter);
@@ -179,8 +179,12 @@ namespace LibSassNet
                 string url = PtrToString(currrentPath);
                 IntPtr previous = sass_compiler_get_last_import(compiler);
                 string previousPath = PtrToString(sass_import_get_abs_path(previous));
-                CustomImport customImportCallback = CallbackDictionary[sass_importer_get_cookie(callback)];
+                CustomImportDelegate customImportCallback = CallbackDictionary[sass_importer_get_cookie(callback)];
                 SassImport[] importsArray = customImportCallback(url, previousPath);
+
+                if (importsArray == null)
+                    return IntPtr.Zero;
+
                 IntPtr cImportsList = sass_make_import_list(importsArray.Length);
                 IntPtr entry;
 

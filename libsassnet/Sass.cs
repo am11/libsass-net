@@ -6,9 +6,9 @@ namespace LibSassNet
     public partial class Sass
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate IntPtr SassImporter(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
+        private delegate IntPtr SassImporterDelegate(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
 
-        private readonly SafeSassContextHandle _currentContext;
+        private readonly SafeSassContextHandle _internalContext;
 
         /// <summary>
         /// Provides an instance of LibSass wrapper class.
@@ -23,19 +23,19 @@ namespace LibSassNet
         {
             if (string.IsNullOrEmpty(sassOptions.Data))
             {
-                _currentContext = new SafeSassFileContextHandle(sassOptions.InputPath);
+                _internalContext = new SafeSassFileContextHandle(sassOptions.InputPath);
             }
             else
             {
-                _currentContext = new SafeSassDataContextHandle(sassOptions.Data);
+                _internalContext = new SafeSassDataContextHandle(sassOptions.Data);
             }
 
-            _currentContext.SetOptions(sassOptions);
+            _internalContext.SetOptions(sassOptions);
         }
 
         public SassResult Compile()
         {
-            return _currentContext.CompileContext();
+            return _internalContext.CompileContext();
         }
     }
 }

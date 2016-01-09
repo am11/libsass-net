@@ -63,7 +63,7 @@ namespace LibSassNet
         private static extern IntPtr sass_context_get_included_files(SafeSassContextHandle @context);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_make_importer(SassImporter @importer_fn, double @priority, IntPtr @cookie);
+        private static extern IntPtr sass_make_importer(SassImporterDelegate @importer_fn, double @priority, IntPtr @cookie);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr sass_make_import_entry(string @path, IntPtr @source, IntPtr @srcmap);

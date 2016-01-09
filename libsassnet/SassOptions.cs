@@ -10,7 +10,7 @@ namespace LibSassNet
         public string Error { get; set; }
     }
 
-    public delegate SassImport[] CustomImport(string url, string previousImport);
+    public delegate SassImport[] CustomImportDelegate(string url, string previousImport);
 
     public struct SassOptions
     {
@@ -128,7 +128,7 @@ namespace LibSassNet
         /// <summary>
         /// List of custom importers.
         /// </summary>
-        public CustomImport[] CustomImports { get; set; }
+        public CustomImportDelegate[] CustomImports { get; set; }
 
         /// <summary>
         /// List of custom headers.
