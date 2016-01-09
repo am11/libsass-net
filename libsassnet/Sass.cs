@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace LibSassNet
 {
     public partial class Sass
     {
-        private delegate IntPtr[] SassImporter(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr SassImporter(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
 
         private readonly SafeSassContextHandle _currentContext;
 
@@ -35,22 +37,5 @@ namespace LibSassNet
         {
             return _currentContext.CompileContext();
         }
-
-        // TODO: figure out jagged array scenarios
-        //public async Task<string> RequestData(string inputData)
-        //{
-        //    var completionSource = new TaskCompletionSource<string>();
-        //    var result = Sass.RegisterCallback(s => completionSource.SetResult(s));
-        //    if (result == -1)
-        //    {
-        //        completionSource.SetException(new SomeException("Failed to set callback"));
-        //        return await completionSource.Task;
-        //    }
-
-        //    result = Sass.RequestData(inputData);
-        //    if (result == -1)
-        //        completionSource.SetException(new SomeException("Failed to request data"));
-        //    return await completionSource.Task;
-        //}
     }
 }

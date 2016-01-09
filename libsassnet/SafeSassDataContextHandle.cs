@@ -8,7 +8,7 @@ namespace LibSassNet
         internal sealed class SafeSassDataContextHandle : SafeSassContextHandle
         {
             internal SafeSassDataContextHandle(string data) :
-                base(sass_make_data_context(sass_make_c_string(EncodeAsUtf8(data))))
+                base(sass_make_data_context(EncodeAsUtf8IntPtr(data)))
             { }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
@@ -27,7 +27,7 @@ namespace LibSassNet
             protected override void SetAdditionalOptions(IntPtr sassOptionsInternal, SassOptions sassOptions)
             {
                 if (!string.IsNullOrWhiteSpace(sassOptions.InputPath))
-                    sass_option_set_input_path(sassOptionsInternal, EncodeAsUtf8(sassOptions.InputPath));
+                    sass_option_set_input_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.InputPath));
             }
         }
     }

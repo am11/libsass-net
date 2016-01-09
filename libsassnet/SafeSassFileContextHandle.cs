@@ -7,7 +7,7 @@ namespace LibSassNet
         internal sealed class SafeSassFileContextHandle : SafeSassContextHandle
         {
             internal SafeSassFileContextHandle(string inputFile) :
-                base(sass_make_file_context(EncodeAsUtf8(inputFile)))
+                base(sass_make_file_context(EncodeAsUtf8String(inputFile)))
             { }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]

@@ -13,10 +13,14 @@ namespace LibSassNet
         [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
         internal abstract class SafeSassContextHandle : SafeHandle
         {
+            private SassImporter _importerCallback;
+            private readonly Dictionary<IntPtr, CustomImport> CallbackDictionary;
+
             internal SafeSassContextHandle(IntPtr method) :
                 base(IntPtr.Zero, true)
             {
                 handle = method;
+                CallbackDictionary = new Dictionary<IntPtr, CustomImport>();
             }
 
             public override bool IsInvalid
@@ -64,13 +68,28 @@ namespace LibSassNet
                 return Encoding.UTF8.GetString(data.ToArray());
             }
 
-            protected static string EncodeAsUtf8(string utf16String)
+            protected static string EncodeAsUtf8String(string utf16String)
             {
+                if (string.IsNullOrEmpty(utf16String))
+                {
+                    return string.Empty;
+                }
+
                 // Get UTF-8 bytes from UTF-16 string
                 byte[] utf8Bytes = Encoding.UTF8.GetBytes(utf16String);
 
                 // Return UTF-8 bytes as ANSI string
                 return Encoding.Default.GetString(utf8Bytes);
+            }
+
+            protected static IntPtr EncodeAsUtf8IntPtr(string utf16String)
+            {
+                if (string.IsNullOrEmpty(utf16String))
+                {
+                    return IntPtr.Zero;
+                }
+
+                return sass_make_c_string(EncodeAsUtf8String(utf16String));
             }
 
             protected SassResult GetResult()
@@ -106,28 +125,28 @@ namespace LibSassNet
                     sass_option_set_precision(sassOptionsInternal, sassOptions.Precision.Value);
 
                 if (!string.IsNullOrWhiteSpace(sassOptions.OutputPath))
-                    sass_option_set_output_path(sassOptionsInternal, EncodeAsUtf8(sassOptions.OutputPath));
+                    sass_option_set_output_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.OutputPath));
 
                 if (!string.IsNullOrWhiteSpace(sassOptions.IncludePath))
-                    sass_option_set_output_path(sassOptionsInternal, EncodeAsUtf8(sassOptions.IncludePath));
+                    sass_option_set_output_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.IncludePath));
 
                 if (!string.IsNullOrWhiteSpace(sassOptions.SourceMapRoot))
-                    sass_option_set_source_map_root(sassOptionsInternal, EncodeAsUtf8(sassOptions.SourceMapRoot));
+                    sass_option_set_source_map_root(sassOptionsInternal, EncodeAsUtf8String(sassOptions.SourceMapRoot));
 
                 if (!string.IsNullOrWhiteSpace(sassOptions.SourceMapFile))
-                    sass_option_set_source_map_file(sassOptionsInternal, EncodeAsUtf8(sassOptions.SourceMapFile));
+                    sass_option_set_source_map_file(sassOptionsInternal, EncodeAsUtf8String(sassOptions.SourceMapFile));
 
                 // Indent can be whitespace.
                 if (!string.IsNullOrEmpty(sassOptions.Indent))
                 {
-                    SafeSassStringOptionHandle indent = new SafeSassStringOptionHandle(EncodeAsUtf8(sassOptions.Indent));
+                    SafeSassStringOptionHandle indent = new SafeSassStringOptionHandle(EncodeAsUtf8String(sassOptions.Indent));
                     sass_option_set_indent(sassOptionsInternal, indent);
                 }
 
                 // Linefeed can be whitespace (i.e. \r is a whitespace).
                 if (!string.IsNullOrEmpty(sassOptions.Linefeed))
                 {
-                    SafeSassStringOptionHandle linefeed = new SafeSassStringOptionHandle(EncodeAsUtf8(sassOptions.Linefeed));
+                    SafeSassStringOptionHandle linefeed = new SafeSassStringOptionHandle(EncodeAsUtf8String(sassOptions.Linefeed));
                     sass_option_set_linefeed(sassOptionsInternal, linefeed);
                 }
 
@@ -136,39 +155,53 @@ namespace LibSassNet
                 if (sassOptions.CustomImports != null)
                 {
                     int length = sassOptions.CustomImports.Length;
-                    IntPtr[] cImporters = sass_make_importer_list(sassOptions.CustomImports.Length);
-                    SassImporter importerCallback = SassImporterCallback;
+                    IntPtr cImporters = sass_make_importer_list(sassOptions.CustomImports.Length);
+                    IntPtr entry;
+                    _importerCallback = SassImporterCallback;
 
                     for (int i = 0; i < length; ++i)
                     {
-                        cImporters[i] = sass_make_importer(importerCallback, length - i - 1, sassOptions.CustomImports[i]);
-                        sass_option_set_c_importers(sassOptionsInternal, cImporters);
+                        CustomImport customImporter = sassOptions.CustomImports[i];
+                        IntPtr pointer = customImporter.Method.MethodHandle.GetFunctionPointer();
+
+                        CallbackDictionary.Add(pointer, customImporter);
+
+                        entry = sass_make_importer(_importerCallback, length - i - 1, pointer);
+                        sass_importer_set_list_entry(cImporters, i, entry);
                     }
+
+                    sass_option_set_c_importers(sassOptionsInternal, cImporters);
                 }
             }
 
-            private IntPtr[] SassImporterCallback(IntPtr currrentPath, IntPtr callback, IntPtr compiler)
+            private IntPtr SassImporterCallback(IntPtr currrentPath, IntPtr callback, IntPtr compiler)
             {
                 string url = PtrToString(currrentPath);
                 IntPtr previous = sass_compiler_get_last_import(compiler);
                 string previousPath = PtrToString(sass_import_get_abs_path(previous));
-                CustomImport customImportCallback = sass_importer_get_cookie(callback);
-                SassImport[] imports = customImportCallback(url, previousPath);
-                IntPtr[] entries = sass_make_import_list(imports.Length);
+                CustomImport customImportCallback = CallbackDictionary[sass_importer_get_cookie(callback)];
+                SassImport[] importsArray = customImportCallback(url, previousPath);
+                IntPtr cImportsList = sass_make_import_list(importsArray.Length);
+                IntPtr entry;
 
-                for (int i = 0; i < imports.Length; ++i)
+                for (int i = 0; i < importsArray.Length; ++i)
                 {
-                    if (string.IsNullOrEmpty(imports[i].Error))
+                    if (string.IsNullOrEmpty(importsArray[i].Error))
                     {
-                        entries[i] = sass_make_import_entry(imports[i].Path, imports[i].Contents, imports[i].Map);
-                        continue;
+                        entry = sass_make_import_entry(EncodeAsUtf8String(importsArray[i].Path),
+                                                       EncodeAsUtf8IntPtr(importsArray[i].Contents),
+                                                       EncodeAsUtf8IntPtr(importsArray[i].Map));
+                    }
+                    else
+                    {
+                        entry = sass_make_import_entry(string.Empty, IntPtr.Zero, IntPtr.Zero);
+                        sass_import_set_error(entry, importsArray[i].Error, -1, -1);
                     }
 
-                    entries[i] = sass_make_import_entry(string.Empty, string.Empty, string.Empty);
-                    sass_import_set_error(entries[i], imports[i].Error, -1, -1);
+                    sass_import_set_list_entry(cImportsList, i, entry);
                 }
 
-                return entries;
+                return cImportsList;
             }
 
             protected virtual void SetAdditionalOptions(IntPtr sassOptionsInternal, SassOptions sassOptions)

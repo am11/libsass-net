@@ -63,25 +63,40 @@ namespace LibSassNet
         private static extern IntPtr sass_context_get_included_files(SafeSassContextHandle @context);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_make_importer(SassImporter @importer, double @priority, CustomImport @cookie);
+        private static extern IntPtr sass_make_importer(SassImporter @importer_fn, double @priority, IntPtr @cookie);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_make_import_entry(string @path, string @source, string @srcmap);
+        private static extern IntPtr sass_make_import_entry(string @path, IntPtr @source, IntPtr @srcmap);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr[] sass_make_importer_list(int @length);
+        private static extern IntPtr sass_make_importer_list(int @length);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr[] sass_make_import_list(int @length);
+        private static extern IntPtr sass_make_import_list(int @length);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern CustomImport sass_importer_get_cookie(IntPtr @cb);
+        private static extern IntPtr sass_make_function_list(int @length);
+
+        [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr sass_make_function(string @signature, IntPtr @cb, IntPtr @cookie);
+
+        [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr sass_importer_get_cookie(IntPtr @cb);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr sass_compiler_get_last_import(IntPtr @compiler);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr sass_import_get_abs_path(IntPtr @entry);
+
+        [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void sass_importer_set_list_entry(IntPtr @list, int @idx, IntPtr @entry);
+
+        [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void sass_function_set_list_entry(IntPtr @list, int @pos, IntPtr @cb);
+
+        [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void sass_import_set_list_entry(IntPtr @list, int @idx, IntPtr @entry);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr sass_import_set_error(IntPtr @import, string @message, int @line, int @col);
@@ -130,6 +145,6 @@ namespace LibSassNet
         private static extern void sass_option_set_linefeed(IntPtr @sass_options /*options*/, SafeSassStringOptionHandle @linefeed);
 
         [DllImport("libsass.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void sass_option_set_c_importers(IntPtr @sass_options /*options*/, IntPtr[] @c_importers);
+        private static extern void sass_option_set_c_importers(IntPtr @sass_options /*options*/, IntPtr @c_importers);
     }
 }
