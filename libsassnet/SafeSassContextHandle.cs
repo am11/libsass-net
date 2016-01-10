@@ -176,13 +176,13 @@ namespace LibSassNet
                 }
             }
 
-            private IntPtr SassImporterCallback(IntPtr currrentPath, IntPtr callback, IntPtr compiler)
+            private IntPtr SassImporterCallback(IntPtr url, IntPtr callback, IntPtr compiler)
             {
-                string url = PtrToString(currrentPath);
-                IntPtr previous = sass_compiler_get_last_import(compiler);
-                string previousPath = PtrToString(sass_import_get_abs_path(previous));
+                string currrentImport = PtrToString(url);
+                IntPtr parentImporterPtr = sass_compiler_get_last_import(compiler);
+                string parentImport = PtrToString(sass_import_get_abs_path(parentImporterPtr));
                 CustomImportDelegate customImportCallback = CallbackDictionary[sass_importer_get_cookie(callback)];
-                SassImport[] importsArray = customImportCallback(url, previousPath, _sassOptions);
+                SassImport[] importsArray = customImportCallback(currrentImport, parentImport, _sassOptions);
 
                 if (importsArray == null)
                     return IntPtr.Zero;
