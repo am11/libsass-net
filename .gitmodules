@@ -1,3 +1,6 @@
-[submodule "libsass/native"]
-	path = libsass/native
-	url = https://github.com/sass/libsass.git
+[submodule "tests/sass-spec"]
+	path = tests/sass-spec
+	url = https://github.com/sass/sass-spec
+[submodule "libsass"]
+	path = src/libsass
+	url = https://github.com/am11/libsass
