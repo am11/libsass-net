@@ -6,8 +6,8 @@ namespace LibSassNet
     {
         internal sealed class SafeSassFileContextHandle : SafeSassContextHandle
         {
-            internal SafeSassFileContextHandle(string inputFile) :
-                base(sass_make_file_context(EncodeAsUtf8String(inputFile)))
+            internal SafeSassFileContextHandle(ISassOptions sassOptions) :
+                base(sassOptions, sass_make_file_context(EncodeAsUtf8String(sassOptions.InputPath)))
             { }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]

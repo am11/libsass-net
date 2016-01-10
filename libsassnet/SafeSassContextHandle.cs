@@ -14,12 +14,14 @@ namespace LibSassNet
         internal abstract class SafeSassContextHandle : SafeHandle
         {
             private SassImporterDelegate _importerCallback;
+            private ISassOptions _sassOptions;
             private readonly Dictionary<IntPtr, CustomImportDelegate> CallbackDictionary;
 
-            internal SafeSassContextHandle(IntPtr method) :
+            internal SafeSassContextHandle(ISassOptions sassOptions, IntPtr method) :
                 base(IntPtr.Zero, true)
             {
                 handle = method;
+                _sassOptions = sassOptions;
                 CallbackDictionary = new Dictionary<IntPtr, CustomImportDelegate>();
             }
 
@@ -110,7 +112,7 @@ namespace LibSassNet
                 };
             }
 
-            internal void SetOptions(SassOptions sassOptions)
+            internal void SetOptions(ISassOptions sassOptions)
             {
                 IntPtr sassOptionsInternal = sass_context_get_options(this);
 
@@ -180,7 +182,7 @@ namespace LibSassNet
                 IntPtr previous = sass_compiler_get_last_import(compiler);
                 string previousPath = PtrToString(sass_import_get_abs_path(previous));
                 CustomImportDelegate customImportCallback = CallbackDictionary[sass_importer_get_cookie(callback)];
-                SassImport[] importsArray = customImportCallback(url, previousPath);
+                SassImport[] importsArray = customImportCallback(url, previousPath, _sassOptions);
 
                 if (importsArray == null)
                     return IntPtr.Zero;
@@ -193,7 +195,7 @@ namespace LibSassNet
                     if (string.IsNullOrEmpty(importsArray[i].Error))
                     {
                         entry = sass_make_import_entry(EncodeAsUtf8String(importsArray[i].Path),
-                                                       EncodeAsUtf8IntPtr(importsArray[i].Contents),
+                                                       EncodeAsUtf8IntPtr(importsArray[i].Data),
                                                        EncodeAsUtf8IntPtr(importsArray[i].Map));
                     }
                     else
@@ -208,7 +210,7 @@ namespace LibSassNet
                 return cImportsList;
             }
 
-            protected virtual void SetAdditionalOptions(IntPtr sassOptionsInternal, SassOptions sassOptions)
+            protected virtual void SetAdditionalOptions(IntPtr sassOptionsInternal, ISassOptions sassOptions)
             { /* only `SafeSassDataContextHandle` derived type will implement it. */ }
         }
     }

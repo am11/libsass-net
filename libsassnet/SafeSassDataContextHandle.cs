@@ -7,8 +7,8 @@ namespace LibSassNet
     {
         internal sealed class SafeSassDataContextHandle : SafeSassContextHandle
         {
-            internal SafeSassDataContextHandle(string data) :
-                base(sass_make_data_context(EncodeAsUtf8IntPtr(data)))
+            internal SafeSassDataContextHandle(ISassOptions sassOptions) :
+                base(sassOptions, sass_make_data_context(EncodeAsUtf8IntPtr(sassOptions.Data)))
             { }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
@@ -24,7 +24,7 @@ namespace LibSassNet
                 return GetResult();
             }
 
-            protected override void SetAdditionalOptions(IntPtr sassOptionsInternal, SassOptions sassOptions)
+            protected override void SetAdditionalOptions(IntPtr sassOptionsInternal, ISassOptions sassOptions)
             {
                 if (!string.IsNullOrWhiteSpace(sassOptions.InputPath))
                     sass_option_set_input_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.InputPath));

@@ -10,6 +10,8 @@ namespace LibSassNet
 
         private readonly SafeSassContextHandle _internalContext;
 
+        private ISassOptions optionsObject;
+
         /// <summary>
         /// Provides an instance of LibSass wrapper class.
         /// </summary>
@@ -19,15 +21,17 @@ namespace LibSassNet
         /// if data is provided, make data context and set input file as
         /// supplementary option. Otherwise make a file context.
         /// </remarks>
-        public Sass(SassOptions sassOptions)
+        public Sass(ISassOptions sassOptions)
         {
+            optionsObject = sassOptions;
+
             if (string.IsNullOrEmpty(sassOptions.Data))
             {
-                _internalContext = new SafeSassFileContextHandle(sassOptions.InputPath);
+                _internalContext = new SafeSassFileContextHandle(sassOptions);
             }
             else
             {
-                _internalContext = new SafeSassDataContextHandle(sassOptions.Data);
+                _internalContext = new SafeSassDataContextHandle(sassOptions);
             }
 
             _internalContext.SetOptions(sassOptions);
