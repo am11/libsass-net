@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 public class SassResult
@@ -20,12 +20,22 @@ public class SassResult
 
     public override string ToString()
     {
-        StringBuilder builder = new StringBuilder();
+        var format = "{1}={2}{0}{0}";
+        var culture = CultureInfo.CurrentCulture;
+        var linefeed = Environment.NewLine;
 
-        foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(this))
-            builder.AppendFormat(CultureInfo.CurrentCulture, "{0}={1}{2}{2}",
-                                 descriptor.Name, descriptor.GetValue(this),
-                                 Environment.NewLine);
+        StringBuilder builder = new StringBuilder();
+        builder.AppendFormat(culture, format, linefeed, nameof(Output), Output)
+               .AppendFormat(culture, format, linefeed, nameof(SourceMap), SourceMap)
+               .AppendFormat(culture, format, linefeed, nameof(IncludedFiles), string.Join(Path.PathSeparator.ToString(), IncludedFiles))
+               .AppendFormat(culture, format, linefeed, nameof(ErrorColumn), ErrorColumn)
+               .AppendFormat(culture, format, linefeed, nameof(ErrorFile), ErrorFile)
+               .AppendFormat(culture, format, linefeed, nameof(ErrorJson), ErrorJson)
+               .AppendFormat(culture, format, linefeed, nameof(ErrorLine), ErrorLine)
+               .AppendFormat(culture, format, linefeed, nameof(ErrorMessage), ErrorMessage)
+               .AppendFormat(culture, format, linefeed, nameof(ErrorSource), ErrorSource)
+               .AppendFormat(culture, format, linefeed, nameof(ErrorStatus), ErrorStatus)
+               .AppendFormat(culture, format, linefeed, nameof(ErrorText), ErrorText);
 
         return builder.ToString();
     }

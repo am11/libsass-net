@@ -148,5 +148,11 @@ namespace Sass
 
         [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
         private static extern void sass_option_set_c_importers(IntPtr @sass_options /*options*/, IntPtr @c_importers);
+
+        [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void sass_option_push_include_path(IntPtr @sass_options /*options*/, string @path);
+
+        [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr sass_option_get_include_path(IntPtr @sass_options /*options*/);
     }
 }

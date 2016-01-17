@@ -18,6 +18,8 @@ namespace Sass.CommandLine
                 InputPath = "C:/Users/Adeel/source/repos/my-LibSass/sass-spec/spec/LibSass/Sáss-UŢF8/input.scss"/*"c:/temp/test.scss"*/,
                 OutputPath = "c:/temp/test.css",
                 SourceMapFile = "test.css.map",
+                IncludePath = "subdir1;/temp/subdir2",
+                IncludePaths = new [] { "subdir3", "/temp/subdir2" },
                 Data = "@import 'MY_VALUE/BLAH\\\\FOO';@import 'g.scss';.Sáss-UŢF8-ταυ{b:c;}",
                 //
                 // Note: Custom import is an array of delegates, each returning array of SassImport.

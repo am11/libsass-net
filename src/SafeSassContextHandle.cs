@@ -150,7 +150,7 @@ namespace Sass
                     sass_option_set_output_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.OutputPath));
 
                 if (!string.IsNullOrWhiteSpace(sassOptions.IncludePath))
-                    sass_option_set_output_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.IncludePath));
+                    sass_option_set_include_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.IncludePath));
 
                 if (!string.IsNullOrWhiteSpace(sassOptions.SourceMapRoot))
                     sass_option_set_source_map_root(sassOptionsInternal, EncodeAsUtf8String(sassOptions.SourceMapRoot));
@@ -172,15 +172,23 @@ namespace Sass
                     sass_option_set_linefeed(sassOptionsInternal, linefeed);
                 }
 
-                SetAdditionalOptions(sassOptionsInternal, sassOptions);
+                SetOverriddenOptions(sassOptionsInternal, sassOptions);
 
                 if (sassOptions.CustomImporters != null)
                 {
-                    sass_option_set_c_importers(sassOptionsInternal, PrepareCustomImporters(sassOptions.CustomImporters));
+                    sass_option_set_c_importers(sassOptionsInternal, GetCustomImportersHeadPtr(sassOptions.CustomImporters));
+                }
+
+                if (sassOptions.IncludePaths != null)
+                {
+                    foreach (var path in sassOptions.IncludePaths)
+                    {
+                        sass_option_push_include_path(sassOptionsInternal, EncodeAsUtf8String(path));
+                    }
                 }
             }
 
-            private IntPtr PrepareCustomImporters(CustomImportDelegate[] customImporters)
+            private IntPtr GetCustomImportersHeadPtr(CustomImportDelegate[] customImporters)
             {
                 int length = customImporters.Length;
                 IntPtr cImporters = sass_make_importer_list(customImporters.Length);
@@ -235,7 +243,7 @@ namespace Sass
                 return cImportsList;
             }
 
-            protected virtual void SetAdditionalOptions(IntPtr sassOptionsInternal, ISassOptions sassOptions)
+            protected virtual void SetOverriddenOptions(IntPtr sassOptionsInternal, ISassOptions sassOptions)
             { /* only `SafeSassDataContextHandle` derived type will implement it. */ }
         }
     }
