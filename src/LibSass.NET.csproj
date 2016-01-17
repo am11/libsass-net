@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build;BuildLibSass" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build;CopyLibSass" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -54,11 +54,12 @@
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
-    <!-- LibSass -->
+    <!-- Build LibSass -->
+    <Target Name="CopyLibSass" DependsOnTargets="BuildLibSass">
+        <Exec Command="copy &quot;$(OutDir)x64\libsass.dll&quot; &quot;$(OutDir)libsass.dll&quot;" LogStandardErrorAsError="true" ConsoleToMSBuild="true" />
+    </Target>
     <Target Name="BuildLibSass">
-        <MSBuild Targets="Build" Projects="libsass\win\libsass.sln" BuildInParallel="true"
-                 Properties="Configuration=$(Configuration);Platform=Win32;OutDir=$(OutputPath)\x86" />
-        <MSBuild Targets="Build" Projects="libsass\win\libsass.sln" BuildInParallel="true"
-                 Properties="Configuration=$(Configuration);Platform=Win64;OutDir=$(OutputPath)\x64" />
+        <MSBuild Targets="Build" Projects="libsass\win\libsass.sln" BuildInParallel="true" Properties="Configuration=$(Configuration);Platform=Win32;OutDir=$(OutDir)x86" />
+        <MSBuild Targets="Build" Projects="libsass\win\libsass.sln" BuildInParallel="true" Properties="Configuration=$(Configuration);Platform=Win64;OutDir=$(OutDir)x64" />
     </Target>
 </Project>

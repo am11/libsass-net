@@ -5,7 +5,6 @@ namespace Sass.Tests
     public class CompileTests
     {
         [Fact]
-        [Theory]
         public void can_compile_simple_string()
         {
             var sass = new SassCompiler(new SassOptions { Data = "body { color: red; }" });

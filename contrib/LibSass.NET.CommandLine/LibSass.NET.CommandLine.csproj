@@ -38,10 +38,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LibSass.NET">
-      <HintPath>..\..\bin\Debug\LibSass.NET.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +47,17 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LibSass.NET.csproj">
+      <Project>{4ad8b048-7a30-4873-8d11-c0a5273e9458}</Project>
+      <Name>LibSass.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent Condition="$(Configuration) == 'Debug'">copy "$(SolutionDir)bin\Debug\libsass.dll" "$(OutputDir)libsass.dll"</PostBuildEvent>
+    <PostBuildEvent Condition="$(Configuration) == 'Release'">copy "$(SolutionDir)bin\libsass.dll" "$(OutputDir)libsass.dll"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
