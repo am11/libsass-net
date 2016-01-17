@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
-using System.Text;
 
 public class SassResult
 {
@@ -20,23 +18,20 @@ public class SassResult
 
     public override string ToString()
     {
-        var format = "{1}={2}{0}{0}";
-        var culture = CultureInfo.CurrentCulture;
         var linefeed = Environment.NewLine;
+        var includeFiles = string.Join(Path.PathSeparator.ToString(), IncludedFiles);
 
-        StringBuilder builder = new StringBuilder();
-        builder.AppendFormat(culture, format, linefeed, nameof(Output), Output)
-               .AppendFormat(culture, format, linefeed, nameof(SourceMap), SourceMap)
-               .AppendFormat(culture, format, linefeed, nameof(IncludedFiles), string.Join(Path.PathSeparator.ToString(), IncludedFiles))
-               .AppendFormat(culture, format, linefeed, nameof(ErrorColumn), ErrorColumn)
-               .AppendFormat(culture, format, linefeed, nameof(ErrorFile), ErrorFile)
-               .AppendFormat(culture, format, linefeed, nameof(ErrorJson), ErrorJson)
-               .AppendFormat(culture, format, linefeed, nameof(ErrorLine), ErrorLine)
-               .AppendFormat(culture, format, linefeed, nameof(ErrorMessage), ErrorMessage)
-               .AppendFormat(culture, format, linefeed, nameof(ErrorSource), ErrorSource)
-               .AppendFormat(culture, format, linefeed, nameof(ErrorStatus), ErrorStatus)
-               .AppendFormat(culture, format, linefeed, nameof(ErrorText), ErrorText);
-
-        return builder.ToString();
+        return string.Join($"{linefeed}{linefeed}",
+                           $"{nameof(Output)}: {Output}",
+                           $"{nameof(SourceMap)}: {SourceMap}",
+                           $"{nameof(IncludedFiles)}: {includeFiles}",
+                           $"{nameof(ErrorMessage)}: {ErrorMessage}",
+                           $"{nameof(ErrorLine)}: {ErrorLine}",
+                           $"{nameof(ErrorColumn)}: {ErrorColumn}",
+                           $"{nameof(ErrorFile)}: {ErrorFile}",
+                           $"{nameof(ErrorJson)}: {ErrorJson}",
+                           $"{nameof(ErrorSource)}: {ErrorSource}",
+                           $"{nameof(ErrorStatus)}: {ErrorStatus}",
+                           $"{nameof(ErrorText)}: {ErrorText}");
     }
 }
