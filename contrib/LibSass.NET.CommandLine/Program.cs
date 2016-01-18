@@ -19,12 +19,12 @@ namespace Sass.CommandLine
                 OutputPath = "c:/temp/test.css",
                 SourceMapFile = "test.css.map",
                 IncludePath = "subdir1;/temp/subdir2",
-                IncludePaths = new [] { "subdir3", "/temp/subdir2" },
+                IncludePaths = new[] { "subdir3", "/temp/subdir2" },
                 Data = "@import 'MY_VALUE/BLAH\\\\FOO';@import 'g.scss';.Sáss-UŢF8-ταυ{b:c;}",
                 //
                 // Note: Custom import is an array of delegates, each returning array of SassImport.
                 //
-                CustomImporters = new CustomImportDelegate[]
+                Importers = new CustomImportDelegate[]
                 {
                     (currentImport, parentImport, options) =>
                     {
@@ -61,7 +61,7 @@ namespace Sass.CommandLine
                         //
                         return new []
                         {
-                            new SassImport { Path = "\\temp\\blah.scss" },
+                            new SassImport { Path = "\\temp\\blah2.scss" },
                             new SassImport { Path = "/my/path/foo.scss", Data = "a{b:c;}.mango{yellow:kiwi;}" },
                             new SassImport
                             {
@@ -102,6 +102,22 @@ namespace Sass.CommandLine
                     // same class or even in different class/assembly, with same signature
                     // as CustomImportDelegate.
                     //
+                },
+                Headers = new CustomImportDelegate[]
+                {
+                    // Note: all headers will be executed exactly once, before any other compile artifact.
+                    (currentImport, parentImport, options) =>
+                    {
+                        return new [] { new SassImport { Path = "blah", Data = "x{y:z;}" } };
+                    },
+                    (currentImport, parentImport, options) =>
+                    {
+                        // Note: since this is header, unlike custom importer,
+                        //       this method will be executed even though the
+                        //       previous one returned a non-null value.
+                        //
+                        return new [] { new SassImport { Path = "blah2", Data = "more {display:inline-block;}" } };
+                    }
                 }
             };
 

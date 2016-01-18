@@ -172,13 +172,6 @@ namespace Sass
                     sass_option_set_linefeed(sassOptionsInternal, linefeed);
                 }
 
-                SetOverriddenOptions(sassOptionsInternal, sassOptions);
-
-                if (sassOptions.CustomImporters != null)
-                {
-                    sass_option_set_c_importers(sassOptionsInternal, GetCustomImportersHeadPtr(sassOptions.CustomImporters));
-                }
-
                 if (sassOptions.IncludePaths != null)
                 {
                     foreach (var path in sassOptions.IncludePaths)
@@ -186,6 +179,18 @@ namespace Sass
                         sass_option_push_include_path(sassOptionsInternal, EncodeAsUtf8String(path));
                     }
                 }
+
+                if (sassOptions.Importers != null)
+                {
+                    sass_option_set_c_importers(sassOptionsInternal, GetCustomImportersHeadPtr(sassOptions.Importers));
+                }
+
+                if (sassOptions.Headers != null)
+                {
+                    sass_option_set_c_headers(sassOptionsInternal, GetCustomImportersHeadPtr(sassOptions.Headers));
+                }
+
+                SetOverriddenOptions(sassOptionsInternal, sassOptions);
             }
 
             private IntPtr GetCustomImportersHeadPtr(CustomImportDelegate[] customImporters)

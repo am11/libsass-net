@@ -111,16 +111,19 @@
         /// <summary>
         /// Custom functions that can be called from sccs code.
         /// </summary>
-        //public IntPtr CustomFunction { get; set; }
+        //public IntPtr Functions { get; set; }
 
         /// <summary>
         /// List of custom importers.
         /// </summary>
-        public CustomImportDelegate[] CustomImporters { get; set; }
+        public CustomImportDelegate[] Importers { get; set; }
 
         /// <summary>
-        /// List of custom headers.
+        /// List of custom headers (Experimental).
+        /// Opposite to custom importers, all custom headers will be
+        /// executed in priority order and all imports will be accumulated
+        /// (so many custom headers can add various custom mixins or css-code).
         /// </summary>
-        //public IntPtr CustomHeaders { get; set; }
+        public CustomImportDelegate[] Headers { get; set; }
     }
 }
