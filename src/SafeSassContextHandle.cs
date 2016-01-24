@@ -124,7 +124,7 @@ namespace Sass
                     ErrorJson = PtrToString(sass_context_get_error_json(this)),
                     ErrorLine = sass_context_get_error_line(this),
                     ErrorMessage = PtrToString(sass_context_get_error_message(this)),
-                    ErrorSource = PtrToString(sass_context_get_error_src(this)),
+                    //ErrorSource = PtrToString(sass_context_get_error_src(this)),
                     ErrorStatus = sass_context_get_error_status(this),
                     ErrorText = PtrToString(sass_context_get_error_text(this)),
                     SourceMap = PtrToString(sass_context_get_source_map_string(this)),

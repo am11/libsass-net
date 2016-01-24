@@ -33,6 +33,15 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Types\SassUnit.cs" />
+        <Compile Include="Types\SassListSeparator.cs" />
+        <Compile Include="Types\SassTypeException.cs" />
+        <Compile Include="Types\SassNumber.cs" />
+        <Compile Include="Types\SassMap.cs" />
+        <Compile Include="Types\SassList.cs" />
+        <Compile Include="Types\ISassExportableType.cs" />
+        <Compile Include="Types\SassColor.cs" />
+        <Compile Include="Types\ISassType.cs" />
         <Compile Include="ISassOptions.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SafeSassContextHandle.cs" />
@@ -53,7 +62,6 @@
         <Reference Include="System" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
     <!-- Build LibSass -->
     <Target Name="CopyLibSass" DependsOnTargets="BuildLibSass">
         <Exec Command="copy &quot;$(OutDir)x64\libsass.dll&quot; &quot;$(OutDir)libsass.dll&quot;" LogStandardErrorAsError="true" ConsoleToMSBuild="true" />
