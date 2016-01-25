@@ -8,10 +8,19 @@ namespace Sass
         public const string _libName = "libsass";
 
         [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_make_map(int @length);
+
+        [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_map_set_key(IntPtr @value_map, int @index, IntPtr @key);
+
+        [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_map_set_value(IntPtr @value_map, int @index, IntPtr @value);
+
+        [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_make_list(int @length, Types.SassListSeparator @sep);
 
         [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void sass_list_set_value(IntPtr @value_list, int @size, IntPtr @value);
+        internal static extern void sass_list_set_value(IntPtr @value_list, int @index, IntPtr @value);
 
         [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_make_number(double @value, string @unit);
