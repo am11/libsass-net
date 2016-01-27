@@ -16,6 +16,8 @@ namespace Sass.Types
         /// Recursively ensures:
         /// * Arbitrary ISassType implementation.
         /// * Circular reference on each "listy" item stored in the values.
+        /// * Since this is a map type (with Dictionary types values), we
+        ///   need to walk through keys and values for the given input.
         /// </summary>
         /// <param name="list">Dictionary containing instances of SassMap</param>
         private void WalkAndEnsureDependencies(List<SassMap> list)
@@ -28,25 +30,33 @@ namespace Sass.Types
             //        report the exact index which violates this rule?
             if (!Values.All(v => v.Key is ISassExportableType &&
                                  v.Value is ISassExportableType))
-                throw new SassTypeException(
-                    @"The value must not contain an object of type that is
-                      an arbitrary implementation of ISassType. Please use
-                      the predefined Sass types or extend the predefined type's
-                      functionality using inheritance or extension methods.");
+                throw new SassTypeException(string.Join("",
+                     "The value must not contain an object of type that is ",
+                     "an arbitrary implementation of ISassType. Please use ",
+                     "the predefined Sass types or extend the predefined type's ",
+                     "functionality using inheritance or extension methods."));
 
             // Detect the circular-referencing values.
             list.Add(this);
 
-            var filteredValues = Values
-                                .Where(v => v.Value is SassMap)
-                                .Select(v => v.Value as SassMap).ToList();
+            var filteredValues = Values.Keys.OfType<SassMap>().ToList();
 
             if (filteredValues.Any(v => list.Contains(v)))
-                throw new SassTypeException(
-                    @"Circular reference detected in a SassMap.
-                      Values cannot contain self-referencing instance.");
+                throw new SassTypeException(string.Join("",
+                     "Circular reference detected in a SassMap.", Environment.NewLine,
+                     "Values cannot contain self-referencing instance."));
 
             filteredValues.ForEach(v => v.WalkAndEnsureDependencies(list));
+
+            filteredValues = Values.Values.OfType<SassMap>().ToList();
+
+            if (filteredValues.Any(v => list.Contains(v)))
+                throw new SassTypeException(string.Join("",
+                     "Circular reference detected in a SassMap.", Environment.NewLine,
+                     "Values cannot contain self-referencing instance."));
+
+            filteredValues.ForEach(v => v.WalkAndEnsureDependencies(list));
+
             _ensured = true;
         }
 

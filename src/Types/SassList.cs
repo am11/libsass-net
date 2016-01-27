@@ -27,23 +27,21 @@ namespace Sass.Types
             // FIXME: Should we instead loop through the array and
             //        report the exact index which violates this rule?
             if (!Values.All(v => v is ISassExportableType))
-                throw new SassTypeException(
-                    @"The value must not contain an object of type that is
-                      an arbitrary implementation of ISassType. Please use
-                      the predefined Sass types or extend the predefined type's
-                      functionality using inheritance or extension methods.");
+                throw new SassTypeException(string.Join("",
+                     "The value must not contain an object of type that is",
+                     "an arbitrary implementation of ISassType. Please use",
+                     "the predefined Sass types or extend the predefined type's",
+                     "functionality using inheritance or extension methods."));
 
             // Detect the circular-referencing values.
             lists.Add(this);
 
-            var filteredValues = Values
-                                .Where(v => v is SassList)
-                                .Select(v => v as SassList).ToList();
+            var filteredValues = Values.OfType<SassList>().ToList();
 
             if (filteredValues.Any(v => lists.Contains(v)))
-                throw new SassTypeException(
-                    @"Circular reference detected in a SassList.
-                      Values cannot contain self-referencing instance.");
+                throw new SassTypeException(string.Join("",
+                     "Circular reference detected in a SassList.", Environment.NewLine,
+                     "Values cannot contain self-referencing instance."));
 
             filteredValues.ForEach(v => v.WalkAndEnsureDependencies(lists));
 
