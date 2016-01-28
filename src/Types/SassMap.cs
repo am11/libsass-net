@@ -30,11 +30,7 @@ namespace Sass.Types
             //        report the exact index which violates this rule?
             if (!Values.All(v => v.Key is ISassExportableType &&
                                  v.Value is ISassExportableType))
-                throw new SassTypeException(string.Join("",
-                     "The value must not contain an object of type that is ",
-                     "an arbitrary implementation of ISassType. Please use ",
-                     "the predefined Sass types or extend the predefined type's ",
-                     "functionality using inheritance or extension methods."));
+                throw new SassTypeException(SassTypeException.ArbitraryInterfaceImplmentationMessage);
 
             // Detect the circular-referencing values.
             list.Add(this);
@@ -42,18 +38,14 @@ namespace Sass.Types
             var filteredValues = Values.Keys.OfType<SassMap>().ToList();
 
             if (filteredValues.Any(v => list.Contains(v)))
-                throw new SassTypeException(string.Join("",
-                     "Circular reference detected in a SassMap.", Environment.NewLine,
-                     "Values cannot contain self-referencing instance."));
+                throw new SassTypeException(SassTypeException.CircularReferenceMessage);
 
             filteredValues.ForEach(v => v.WalkAndEnsureDependencies(list));
 
             filteredValues = Values.Values.OfType<SassMap>().ToList();
 
             if (filteredValues.Any(v => list.Contains(v)))
-                throw new SassTypeException(string.Join("",
-                     "Circular reference detected in a SassMap.", Environment.NewLine,
-                     "Values cannot contain self-referencing instance."));
+                throw new SassTypeException(SassTypeException.CircularReferenceMessage);
 
             filteredValues.ForEach(v => v.WalkAndEnsureDependencies(list));
 
