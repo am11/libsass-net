@@ -23,8 +23,25 @@ using System.Runtime.InteropServices;
 
 namespace Sass
 {
+    public struct SassInfo
+    {
+        public string LibsassVersion { get; internal set; }
+        public string SassLanguageVersion { get; internal set; }
+    }
+
     public partial class SassCompiler
     {
+        public static readonly SassInfo SassInfo;
+
+        static SassCompiler()
+        {
+            SassInfo = new SassInfo
+            {
+                LibsassVersion = SafeSassContextHandle.LibsassVersion(),
+                SassLanguageVersion = SafeSassContextHandle.SassLanguageVersion()
+            };
+        }
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr SassImporterDelegate(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
 

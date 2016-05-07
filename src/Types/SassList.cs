@@ -34,7 +34,7 @@ namespace Sass.Types
 
             var filteredValues = Values.OfType<SassList>().ToList();
 
-            if (filteredValues.Any(v => lists.Contains(v)))
+            if (filteredValues.Any(lists.Contains))
                 throw new SassTypeException(SassTypeException.CircularReferenceMessage);
 
             filteredValues.ForEach(v => v.WalkAndEnsureDependencies(lists));

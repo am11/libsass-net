@@ -172,5 +172,11 @@ namespace Sass
 
         [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
         private static extern void sass_option_push_include_path(IntPtr @sass_options /*options*/, string @path);
+
+        [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr libsass_version();
+
+        [DllImport(_libName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr libsass_language_version();
     }
 }

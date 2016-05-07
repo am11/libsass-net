@@ -15,7 +15,7 @@ namespace Sass.CommandLine
                 Linefeed = "\r\n",
                 Indent = "\t\t",
                 OutputStyle = SassOutputStyle.Compressed,
-                InputPath = "C:/Users/Adeel/source/repos/my-LibSass/sass-spec/spec/LibSass/Sáss-UŢF8/input.scss"/*"c:/temp/test.scss"*/,
+                InputPath = "C:/Users/Adeel/source/repos/libsass-net/tests/sass-spec/spec/LibSass/Sáss-UŢF8/input.scss"/*"c:/temp/test.scss"*/,
                 OutputPath = "c:/temp/test.css",
                 SourceMapFile = "test.css.map",
                 IncludePath = "subdir1;/temp/subdir2",

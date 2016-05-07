@@ -53,6 +53,15 @@ namespace Sass
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
             public abstract SassResult CompileContext();
 
+            public static string LibsassVersion()
+            {
+                return PtrToString(libsass_version());
+            }
+            public static string SassLanguageVersion()
+            {
+                return PtrToString(libsass_language_version());
+            }
+
             private static string[] PtrToStringArray(IntPtr stringArray)
             {
                 if (stringArray == IntPtr.Zero)
