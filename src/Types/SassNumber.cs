@@ -7,7 +7,7 @@ namespace Sass.Types
         public double Value { get; set; }
         public SassUnit Unit { get; set; }
 
-        private IntPtr _cachedPtr { get; set; }
+        private IntPtr CachedPtr { get; set; }
 
         public override string ToString()
         {
@@ -16,10 +16,10 @@ namespace Sass.Types
 
         IntPtr ISassExportableType.GetInternalTypePtr()
         {
-            if (_cachedPtr != null)
-                return _cachedPtr;
+            if (CachedPtr != default(IntPtr))
+                return CachedPtr;
 
-            return _cachedPtr = SassCompiler.sass_make_number(Value, Unit.ToString());
+            return CachedPtr = SassCompiler.sass_make_number(Value, Unit.ToString());
         }
     }
 }

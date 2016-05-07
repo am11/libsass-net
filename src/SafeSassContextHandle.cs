@@ -35,14 +35,14 @@ namespace Sass
         {
             private SassImporterDelegate _importerCallback;
             private ISassOptions _sassOptions;
-            private readonly Dictionary<IntPtr, CustomImportDelegate> CallbackDictionary;
+            private readonly Dictionary<IntPtr, CustomImportDelegate> _callbackDictionary;
 
             internal SafeSassContextHandle(ISassOptions sassOptions, IntPtr method) :
                 base(IntPtr.Zero, true)
             {
                 handle = method;
                 _sassOptions = sassOptions;
-                CallbackDictionary = new Dictionary<IntPtr, CustomImportDelegate>();
+                _callbackDictionary = new Dictionary<IntPtr, CustomImportDelegate>();
             }
 
             public override bool IsInvalid
@@ -84,11 +84,10 @@ namespace Sass
 
                 var data = new List<byte>();
                 var offset = 0;
-                byte ch;
 
                 while (true)
                 {
-                    ch = Marshal.ReadByte(handle, offset++);
+                    var ch = Marshal.ReadByte(handle, offset++);
 
                     if (ch == 0)
                         break;
@@ -214,7 +213,7 @@ namespace Sass
                     CustomImportDelegate customImporter = customImporters[i];
                     IntPtr pointer = customImporter.Method.MethodHandle.GetFunctionPointer();
 
-                    CallbackDictionary.Add(pointer, customImporter);
+                    _callbackDictionary.Add(pointer, customImporter);
 
                     entry = sass_make_importer(_importerCallback, length - i - 1, pointer);
                     sass_importer_set_list_entry(cImporters, i, entry);
@@ -228,17 +227,17 @@ namespace Sass
                 string currrentImport = PtrToString(url);
                 IntPtr parentImporterPtr = sass_compiler_get_last_import(compiler);
                 string parentImport = PtrToString(sass_import_get_abs_path(parentImporterPtr));
-                CustomImportDelegate customImportCallback = CallbackDictionary[sass_importer_get_cookie(callback)];
+                CustomImportDelegate customImportCallback = _callbackDictionary[sass_importer_get_cookie(callback)];
                 SassImport[] importsArray = customImportCallback(currrentImport, parentImport, _sassOptions);
 
                 if (importsArray == null)
                     return IntPtr.Zero;
 
                 IntPtr cImportsList = sass_make_import_list(importsArray.Length);
-                IntPtr entry;
 
                 for (int i = 0; i < importsArray.Length; ++i)
                 {
+                    IntPtr entry;
                     if (string.IsNullOrEmpty(importsArray[i].Error))
                     {
                         entry = sass_make_import_entry(EncodeAsUtf8String(importsArray[i].Path),

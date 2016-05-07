@@ -50,7 +50,7 @@ namespace Sass.Types
 
         IntPtr ISassExportableType.GetInternalTypePtr()
         {
-            if (_cachedPtr != null)
+            if (_cachedPtr != default(IntPtr))
                 return _cachedPtr;
 
             WalkAndEnsureDependencies(new List<SassList>());
@@ -59,7 +59,7 @@ namespace Sass.Types
 
             for (int index = 0; index < Values.Count; ++index)
             {
-                var exportableValue = (Values[index] as ISassExportableType);
+                var exportableValue = (ISassExportableType)Values[index];
 
                 SassCompiler.sass_list_set_value(
                     list, index, exportableValue.GetInternalTypePtr());

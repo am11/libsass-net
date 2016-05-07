@@ -2,6 +2,6 @@
 {
     public enum SassUnit
     {
-        IN, CM, PC, MM, PT, PX
+        In, Cm, Pc, Mm, Pt, Px
     }
 }

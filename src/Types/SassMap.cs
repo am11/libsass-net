@@ -37,14 +37,14 @@ namespace Sass.Types
 
             var filteredValues = Values.Keys.OfType<SassMap>().ToList();
 
-            if (filteredValues.Any(v => list.Contains(v)))
+            if (filteredValues.Any(list.Contains))
                 throw new SassTypeException(SassTypeException.CircularReferenceMessage);
 
             filteredValues.ForEach(v => v.WalkAndEnsureDependencies(list));
 
             filteredValues = Values.Values.OfType<SassMap>().ToList();
 
-            if (filteredValues.Any(v => list.Contains(v)))
+            if (filteredValues.Any(list.Contains))
                 throw new SassTypeException(SassTypeException.CircularReferenceMessage);
 
             filteredValues.ForEach(v => v.WalkAndEnsureDependencies(list));
@@ -59,7 +59,7 @@ namespace Sass.Types
 
         IntPtr ISassExportableType.GetInternalTypePtr()
         {
-            if (_cachedPtr != null)
+            if (_cachedPtr != default(IntPtr))
                 return _cachedPtr;
 
             WalkAndEnsureDependencies(new List<SassMap>());
@@ -69,8 +69,8 @@ namespace Sass.Types
 
             foreach (var item in Values)
             {
-                var exportableKey = (item.Key as ISassExportableType);
-                var exportableValue = (item.Value as ISassExportableType);
+                var exportableKey = (ISassExportableType)item.Key;
+                var exportableValue = (ISassExportableType)item.Value;
 
                 SassCompiler.sass_map_set_key(
                     map, index, exportableKey.GetInternalTypePtr());

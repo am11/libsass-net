@@ -47,8 +47,6 @@ namespace Sass
 
         private readonly SafeSassContextHandle _internalContext;
 
-        private ISassOptions optionsObject;
-
         /// <summary>
         /// Provides an instance of LibSass wrapper class.
         /// </summary>
@@ -60,8 +58,6 @@ namespace Sass
         /// </remarks>
         public SassCompiler(ISassOptions sassOptions)
         {
-            optionsObject = sassOptions;
-
             if (string.IsNullOrEmpty(sassOptions.Data))
             {
                 _internalContext = new SafeSassFileContextHandle(sassOptions);
