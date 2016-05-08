@@ -27,6 +27,9 @@ namespace Sass
         internal static extern void sass_list_set_value(IntPtr @value_list, int @index, IntPtr @value);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_make_color(double @r, double @g, double @b, double @a);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_make_number(double @value, string @unit);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
