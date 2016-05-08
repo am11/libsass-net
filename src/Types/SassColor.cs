@@ -9,7 +9,7 @@ namespace Sass.Types
         public int Blue { get; set; } = 0;
         public double Alpha { get; set; } = 1;
 
-        private IntPtr CachedPtr { get; set; }
+        private IntPtr _cachedPtr;
 
         public override string ToString()
         {
@@ -21,12 +21,18 @@ namespace Sass.Types
             return $"rgba({red},{green},{blue},{alpha})";
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr()
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
         {
-            if (CachedPtr != default(IntPtr))
-                return CachedPtr;
+            if (_cachedPtr != default(IntPtr))
+                return _cachedPtr;
 
-            return CachedPtr = SassCompiler.sass_make_color(Red, Green, Blue, Alpha);
+            validityEventHandler += (this as ISassExportableType).OnInvalidated;
+            return _cachedPtr = SassCompiler.sass_make_color(Red, Green, Blue, Alpha);
+        }
+
+        void ISassExportableType.OnInvalidated()
+        {
+            _cachedPtr = default(IntPtr);
         }
     }
 }

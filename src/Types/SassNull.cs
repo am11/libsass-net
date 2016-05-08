@@ -2,22 +2,25 @@
 
 namespace Sass.Types
 {
-    internal class SassNull : ISassType
+    internal class SassNull : ISassType, ISassExportableType
     {
-        private static IntPtr _value;
+        private static IntPtr _cachedPtr;
 
-        internal static IntPtr Value
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
         {
-            get
-            {
-                if (_value != default(IntPtr))
-                    return _value;
+            if (_cachedPtr != default(IntPtr))
+                return _cachedPtr;
 
-                return _value = SassCompiler.sass_make_null();
-            }
+            validityEventHandler += (this as ISassExportableType).OnInvalidated;
+            return _cachedPtr = SassCompiler.sass_make_null();
         }
 
         private SassNull()
         { }
+
+        void ISassExportableType.OnInvalidated()
+        {
+            _cachedPtr = default(IntPtr);
+        }
     }
 }

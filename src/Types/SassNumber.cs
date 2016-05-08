@@ -7,19 +7,25 @@ namespace Sass.Types
         public double Value { get; set; }
         public SassUnit Unit { get; set; }
 
-        private IntPtr CachedPtr { get; set; }
+        private IntPtr _cachedPtr;
 
         public override string ToString()
         {
             return $"{Value}{Unit}";
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr()
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
         {
-            if (CachedPtr != default(IntPtr))
-                return CachedPtr;
+            if (_cachedPtr != default(IntPtr))
+                return _cachedPtr;
 
-            return CachedPtr = SassCompiler.sass_make_number(Value, Unit.ToString());
+            validityEventHandler += (this as ISassExportableType).OnInvalidated;
+            return _cachedPtr = SassCompiler.sass_make_number(Value, Unit.ToString());
+        }
+
+        void ISassExportableType.OnInvalidated()
+        {
+            _cachedPtr = default(IntPtr);
         }
     }
 }

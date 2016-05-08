@@ -19,21 +19,33 @@ namespace Sass.Types
             _primitiveValue = value;
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr()
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
         {
+            IntPtr returnValue;
+
             if (_primitiveValue)
             {
                 if (_trueValue != default(IntPtr))
                     return _trueValue;
 
-                return _trueValue = SassCompiler.sass_make_boolean(true);
+                returnValue = _trueValue = SassCompiler.sass_make_boolean(true);
+            }
+            else
+            {
+                if (_falseValue != default(IntPtr))
+                    return _falseValue;
+
+                returnValue = _falseValue = SassCompiler.sass_make_boolean(false);
             }
 
-            if (_falseValue != default(IntPtr))
-                return _falseValue;
+            validityEventHandler += (this as ISassExportableType).OnInvalidated;
+            return returnValue;
+        }
 
-            return _falseValue = SassCompiler.sass_make_boolean(false);
-
+        void ISassExportableType.OnInvalidated()
+        {
+            _trueValue = default(IntPtr);
+            _falseValue = default(IntPtr);
         }
     }
 }

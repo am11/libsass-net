@@ -27,6 +27,8 @@ using System.Text;
 
 namespace Sass
 {
+    internal delegate void InternalPtrValidityEventHandler();
+
     public partial class SassCompiler
     {
         [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
@@ -36,6 +38,7 @@ namespace Sass
             private SassImporterDelegate _importerCallback;
             private readonly ISassOptions _sassOptions;
             private readonly Dictionary<IntPtr, CustomImportDelegate> _callbackDictionary;
+            internal event InternalPtrValidityEventHandler ValidityEvent;
 
             internal SassSafeContextHandle(ISassOptions sassOptions, IntPtr method) :
                 base(IntPtr.Zero, true)
@@ -48,7 +51,13 @@ namespace Sass
             public override bool IsInvalid => handle == IntPtr.Zero;
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-            public abstract SassResult CompileContext();
+            public SassResult CompileContext()
+            {
+                ValidityEvent();
+                return CompileInternalContext();
+            }
+
+            protected abstract SassResult CompileInternalContext();
 
             public static string LibsassVersion()
             {

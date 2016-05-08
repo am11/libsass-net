@@ -57,7 +57,7 @@ namespace Sass.Types
             return string.Join(",", Values.Select(v => v.ToString()));
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr()
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
         {
             if (_cachedPtr != default(IntPtr))
                 return _cachedPtr;
@@ -73,13 +73,19 @@ namespace Sass.Types
                 var exportableValue = (ISassExportableType)item.Value;
 
                 SassCompiler.sass_map_set_key(
-                    map, index, exportableKey.GetInternalTypePtr());
+                    map, index, exportableKey.GetInternalTypePtr(validityEventHandler));
                 SassCompiler.sass_map_set_value(
-                    map, index, exportableValue.GetInternalTypePtr());
+                    map, index, exportableValue.GetInternalTypePtr(validityEventHandler));
                 index++;
             }
 
+            validityEventHandler += (this as ISassExportableType).OnInvalidated;
             return _cachedPtr = map;
+        }
+
+        void ISassExportableType.OnInvalidated()
+        {
+            _cachedPtr = default(IntPtr);
         }
     }
 }

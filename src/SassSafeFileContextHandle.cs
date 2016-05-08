@@ -37,7 +37,7 @@ namespace Sass
                 return true;
             }
 
-            public override SassResult CompileContext()
+            protected override SassResult CompileInternalContext()
             {
                 sass_compile_file_context(this);
                 return GetResult();
