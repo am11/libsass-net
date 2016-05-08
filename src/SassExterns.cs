@@ -30,6 +30,12 @@ namespace Sass
         internal static extern IntPtr sass_make_number(double @value, string @unit);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_make_boolean(bool @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_make_null();
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr sass_delete_data_context(IntPtr @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]

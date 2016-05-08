@@ -34,7 +34,7 @@ namespace Sass
         internal abstract class SafeSassContextHandle : SafeHandle
         {
             private SassImporterDelegate _importerCallback;
-            private ISassOptions _sassOptions;
+            private readonly ISassOptions _sassOptions;
             private readonly Dictionary<IntPtr, CustomImportDelegate> _callbackDictionary;
 
             internal SafeSassContextHandle(ISassOptions sassOptions, IntPtr method) :
@@ -45,10 +45,7 @@ namespace Sass
                 _callbackDictionary = new Dictionary<IntPtr, CustomImportDelegate>();
             }
 
-            public override bool IsInvalid
-            {
-                get { return handle == IntPtr.Zero; }
-            }
+            public override bool IsInvalid => handle == IntPtr.Zero;
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
             public abstract SassResult CompileContext();
@@ -205,7 +202,6 @@ namespace Sass
             {
                 int length = customImporters.Length;
                 IntPtr cImporters = sass_make_importer_list(customImporters.Length);
-                IntPtr entry;
                 _importerCallback = SassImporterCallback;
 
                 for (int i = 0; i < length; ++i)
@@ -215,7 +211,7 @@ namespace Sass
 
                     _callbackDictionary.Add(pointer, customImporter);
 
-                    entry = sass_make_importer(_importerCallback, length - i - 1, pointer);
+                    var entry = sass_make_importer(_importerCallback, length - i - 1, pointer);
                     sass_importer_set_list_entry(cImporters, i, entry);
                 }
 
