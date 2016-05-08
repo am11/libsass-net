@@ -37,15 +37,15 @@ namespace Sass
         {
             SassInfo = new SassInfo
             {
-                LibsassVersion = SafeSassContextHandle.LibsassVersion(),
-                SassLanguageVersion = SafeSassContextHandle.SassLanguageVersion()
+                LibsassVersion = SassSafeContextHandle.LibsassVersion(),
+                SassLanguageVersion = SassSafeContextHandle.SassLanguageVersion()
             };
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr SassImporterDelegate(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
 
-        private readonly SafeSassContextHandle _internalContext;
+        private readonly SassSafeContextHandle _internalContext;
 
         /// <summary>
         /// Provides an instance of LibSass wrapper class.
@@ -60,11 +60,11 @@ namespace Sass
         {
             if (string.IsNullOrEmpty(sassOptions.Data))
             {
-                _internalContext = new SafeSassFileContextHandle(sassOptions);
+                _internalContext = new SassSafeFileContextHandle(sassOptions);
             }
             else
             {
-                _internalContext = new SafeSassDataContextHandle(sassOptions);
+                _internalContext = new SassSafeDataContextHandle(sassOptions);
             }
 
             _internalContext.SetOptions(sassOptions);

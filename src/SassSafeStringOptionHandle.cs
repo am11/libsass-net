@@ -29,9 +29,9 @@ namespace Sass
     {
         [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
         [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
-        internal sealed class SafeSassStringOptionHandle : SafeHandle
+        internal sealed class SassSafeStringOptionHandle : SafeHandle
         {
-            internal SafeSassStringOptionHandle(string optionValue) :
+            internal SassSafeStringOptionHandle(string optionValue) :
                   base(IntPtr.Zero, true)
             {
                 handle = Marshal.StringToCoTaskMemAnsi(optionValue);

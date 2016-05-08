@@ -18,29 +18,36 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Runtime.ConstrainedExecution;
 
 namespace Sass
 {
     public partial class SassCompiler
     {
-        internal sealed class SafeSassFileContextHandle : SafeSassContextHandle
+        internal sealed class SassSafeDataContextHandle : SassSafeContextHandle
         {
-            internal SafeSassFileContextHandle(ISassOptions sassOptions) :
-                base(sassOptions, sass_make_file_context(EncodeAsUtf8String(sassOptions.InputPath)))
+            internal SassSafeDataContextHandle(ISassOptions sassOptions) :
+                base(sassOptions, sass_make_data_context(EncodeAsUtf8IntPtr(sassOptions.Data)))
             { }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
             protected override bool ReleaseHandle()
             {
-                sass_delete_file_context(handle);
+                sass_delete_data_context(handle);
                 return true;
             }
 
             public override SassResult CompileContext()
             {
-                sass_compile_file_context(this);
+                sass_compile_data_context(this);
                 return GetResult();
+            }
+
+            protected override void SetOverriddenOptions(IntPtr sassOptionsInternal, ISassOptions sassOptions)
+            {
+                if (!string.IsNullOrWhiteSpace(sassOptions.InputPath))
+                    sass_option_set_input_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.InputPath));
             }
         }
     }

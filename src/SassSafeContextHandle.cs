@@ -31,13 +31,13 @@ namespace Sass
     {
         [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
         [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
-        internal abstract class SafeSassContextHandle : SafeHandle
+        internal abstract class SassSafeContextHandle : SafeHandle
         {
             private SassImporterDelegate _importerCallback;
             private readonly ISassOptions _sassOptions;
             private readonly Dictionary<IntPtr, CustomImportDelegate> _callbackDictionary;
 
-            internal SafeSassContextHandle(ISassOptions sassOptions, IntPtr method) :
+            internal SassSafeContextHandle(ISassOptions sassOptions, IntPtr method) :
                 base(IntPtr.Zero, true)
             {
                 handle = method;
@@ -166,14 +166,14 @@ namespace Sass
                 // Indent can be whitespace.
                 if (!string.IsNullOrEmpty(sassOptions.Indent))
                 {
-                    SafeSassStringOptionHandle indent = new SafeSassStringOptionHandle(EncodeAsUtf8String(sassOptions.Indent));
+                    var indent = new SassSafeStringOptionHandle(EncodeAsUtf8String(sassOptions.Indent));
                     sass_option_set_indent(sassOptionsInternal, indent);
                 }
 
                 // Linefeed can be whitespace (i.e. \r is a whitespace).
                 if (!string.IsNullOrEmpty(sassOptions.Linefeed))
                 {
-                    SafeSassStringOptionHandle linefeed = new SafeSassStringOptionHandle(EncodeAsUtf8String(sassOptions.Linefeed));
+                    var linefeed = new SassSafeStringOptionHandle(EncodeAsUtf8String(sassOptions.Linefeed));
                     sass_option_set_linefeed(sassOptionsInternal, linefeed);
                 }
 

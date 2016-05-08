@@ -45,10 +45,10 @@ namespace Sass
         private static extern IntPtr sass_copy_c_string(string @input_string);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int sass_compile_data_context(SafeSassDataContextHandle @data_context);
+        private static extern int sass_compile_data_context(SassSafeDataContextHandle @data_context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int sass_compile_file_context(SafeSassFileContextHandle @file_context);
+        private static extern int sass_compile_file_context(SassSafeFileContextHandle @file_context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr sass_make_file_context(string @source_string);
@@ -57,40 +57,40 @@ namespace Sass
         private static extern IntPtr sass_make_data_context(IntPtr @source_string);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_options(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_options(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_output_string(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_output_string(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int sass_context_get_error_status(SafeSassContextHandle @context);
+        private static extern int sass_context_get_error_status(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_error_json(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_error_json(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_error_text(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_error_text(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_error_message(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_error_message(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_error_file(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_error_file(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_error_src(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_error_src(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int sass_context_get_error_line(SafeSassContextHandle @context);
+        private static extern int sass_context_get_error_line(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int sass_context_get_error_column(SafeSassContextHandle @context);
+        private static extern int sass_context_get_error_column(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_source_map_string(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_source_map_string(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr sass_context_get_included_files(SafeSassContextHandle @context);
+        private static extern IntPtr sass_context_get_included_files(SassSafeContextHandle @context);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr sass_make_importer(SassImporterDelegate @importer_fn, double @priority, IntPtr @cookie);
@@ -169,10 +169,10 @@ namespace Sass
         private static extern void sass_option_set_precision(IntPtr @sass_options /*options*/, int @precision);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void sass_option_set_indent(IntPtr @sass_options /*options*/, SafeSassStringOptionHandle @indent);
+        private static extern void sass_option_set_indent(IntPtr @sass_options /*options*/, SassSafeStringOptionHandle @indent);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void sass_option_set_linefeed(IntPtr @sass_options /*options*/, SafeSassStringOptionHandle @linefeed);
+        private static extern void sass_option_set_linefeed(IntPtr @sass_options /*options*/, SassSafeStringOptionHandle @linefeed);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         private static extern void sass_option_set_c_importers(IntPtr @sass_options /*options*/, IntPtr @c_importers);
