@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sass.Compiler;
+using Sass.Compiler.Context;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Types
 {
@@ -55,14 +58,13 @@ namespace Sass.Types
 
             WalkAndEnsureDependencies(new List<SassList>());
 
-            var list = SassCompiler.sass_make_list(Values.Count, Separator);
+            var list = sass_make_list(Values.Count, Separator);
 
             for (int index = 0; index < Values.Count; ++index)
             {
                 var exportableValue = (ISassExportableType)Values[index];
 
-                SassCompiler.sass_list_set_value(
-                    list, index, exportableValue.GetInternalTypePtr(validityEventHandler));
+                sass_list_set_value(list, index, exportableValue.GetInternalTypePtr(validityEventHandler));
             }
 
             validityEventHandler += (this as ISassExportableType).OnInvalidated;

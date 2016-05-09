@@ -1,4 +1,4 @@
-﻿namespace Sass
+﻿namespace Sass.Compiler.Options
 {
     public struct SassOptions : ISassOptions
     {
@@ -111,7 +111,7 @@
         /// <summary>
         /// Custom functions that can be called from sccs code.
         /// </summary>
-        //public IntPtr Functions { get; set; }
+        public SassFunctionCollection Functions { get; set; }
 
         /// <summary>
         /// List of custom importers.

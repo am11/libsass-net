@@ -18,33 +18,28 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
+using Sass.Compiler.Options;
 
-namespace Sass
+namespace Sass.Compiler.Context
 {
-    public partial class SassCompiler
-    {
-        [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
-        [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
-        internal sealed class SassSafeStringOptionHandle : SafeHandle
+        internal sealed class SassSafeFileContextHandle : SassSafeContextHandle
         {
-            internal SassSafeStringOptionHandle(string optionValue) :
-                  base(IntPtr.Zero, true)
-            {
-                handle = Marshal.StringToCoTaskMemAnsi(optionValue);
-            }
+            internal SassSafeFileContextHandle(ISassOptions sassOptions) :
+                base(sassOptions, SassExterns.sass_make_file_context(EncodeAsUtf8String(sassOptions.InputPath)))
+            { }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
             protected override bool ReleaseHandle()
             {
-                Marshal.FreeCoTaskMem(handle);
+                SassExterns.sass_delete_file_context(handle);
                 return true;
             }
 
-            public override bool IsInvalid => handle == IntPtr.Zero;
+            protected override SassResult CompileInternalContext()
+            {
+                SassExterns.sass_compile_file_context(this);
+                return GetResult();
+            }
         }
     }
-}

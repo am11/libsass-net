@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text;
+using Sass.Compiler;
+using Sass.Compiler.Options;
 
 namespace Sass.CommandLine
 {
@@ -119,6 +121,11 @@ namespace Sass.CommandLine
                         return new [] { new SassImport { Path = "blah2", Data = "more {display:inline-block;}" } };
                     }
                 }
+            };
+
+            sassOptions.Functions = new SassFunctionCollection
+            {
+                ["foo(blah, param2)"] = (options, argv) => null // do something with argument vector (argv)
             };
 
             var sass = new SassCompiler(sassOptions);

@@ -33,6 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Compiler\Context\FunctionHandling.cs" />
+    <Compile Include="Compiler\Context\ImporterHandling.cs" />
+    <Compile Include="Compiler\Context\InteropUtils.cs" />
+    <Compile Include="Compiler\Options\SassFunction.cs" />
+    <Compile Include="Compiler\Context\OptionsHandling.cs" />
     <Compile Include="Types\SassBool.cs" />
     <Compile Include="Types\SassNull.cs" />
     <Compile Include="Types\SassUnit.cs" />
@@ -44,18 +49,18 @@
     <Compile Include="Types\ISassExportableType.cs" />
     <Compile Include="Types\SassColor.cs" />
     <Compile Include="Types\ISassType.cs" />
-    <Compile Include="ISassOptions.cs" />
+    <Compile Include="Compiler\Options\ISassOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SassSafeContextHandle.cs" />
-    <Compile Include="SassSafeDataContextHandle.cs" />
-    <Compile Include="SassSafeFileContextHandle.cs" />
-    <Compile Include="SassSafeStringOptionHandle.cs" />
-    <Compile Include="SassCompiler.cs" />
-    <Compile Include="SassExterns.cs" />
-    <Compile Include="SassImport.cs" />
-    <Compile Include="SassOptions.cs" />
-    <Compile Include="SassOutputStyle.cs" />
-    <Compile Include="SassResult.cs" />
+    <Compile Include="Compiler\Context\SafeContextHandle.cs" />
+    <Compile Include="Compiler\Context\SafeDataContextHandle.cs" />
+    <Compile Include="Compiler\Context\SafeFileContextHandle.cs" />
+    <Compile Include="Compiler\Context\SafeStringOptionHandle.cs" />
+    <Compile Include="Compiler\SassCompiler.cs" />
+    <Compile Include="Compiler\SassExterns.cs" />
+    <Compile Include="Compiler\Options\SassImport.cs" />
+    <Compile Include="Compiler\Options\SassOptions.cs" />
+    <Compile Include="Compiler\Options\SassOutputStyle.cs" />
+    <Compile Include="Compiler\SassResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libsassnet.nuspec" />

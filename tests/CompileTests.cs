@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using Sass.Compiler;
+using Sass.Compiler.Options;
+using Xunit;
 
 namespace Sass.Tests
 {

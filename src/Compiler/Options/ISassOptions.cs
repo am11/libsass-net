@@ -1,4 +1,4 @@
-﻿namespace Sass
+﻿namespace Sass.Compiler.Options
 {
     public interface ISassOptions
     {
@@ -109,9 +109,9 @@
         string SourceMapRoot { get; set; }
 
         /// <summary>
-        /// Custom functions that can be called from sccs code.
+        /// Custom functions that can be called from Sass code.
         /// </summary>
-        // IntPtr Functions { get; set; }
+        SassFunctionCollection Functions { get; set; }
 
         /// <summary>
         /// List of custom importers.

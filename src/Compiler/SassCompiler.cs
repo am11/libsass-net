@@ -20,8 +20,10 @@
 
 using System;
 using System.Runtime.InteropServices;
+using Sass.Compiler.Context;
+using Sass.Compiler.Options;
 
-namespace Sass
+namespace Sass.Compiler
 {
     public struct SassInfo
     {
@@ -29,7 +31,13 @@ namespace Sass
         public string SassLanguageVersion { get; internal set; }
     }
 
-    public partial class SassCompiler
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate IntPtr SassImporterDelegate(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate IntPtr SassFunctionDelegate(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
+
+    public class SassCompiler
     {
         public static readonly SassInfo SassInfo;
 
@@ -41,9 +49,6 @@ namespace Sass
                 SassLanguageVersion = SassSafeContextHandle.SassLanguageVersion()
             };
         }
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate IntPtr SassImporterDelegate(IntPtr currrentPath, IntPtr callback, IntPtr compiler);
 
         private readonly SassSafeContextHandle _internalContext;
 

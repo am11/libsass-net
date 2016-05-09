@@ -20,35 +20,28 @@
 
 using System;
 using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
 
-namespace Sass
+namespace Sass.Compiler.Context
 {
-    public partial class SassCompiler
-    {
-        internal sealed class SassSafeDataContextHandle : SassSafeContextHandle
+        [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
+        [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
+        internal sealed class SassSafeStringOptionHandle : SafeHandle
         {
-            internal SassSafeDataContextHandle(ISassOptions sassOptions) :
-                base(sassOptions, sass_make_data_context(EncodeAsUtf8IntPtr(sassOptions.Data)))
-            { }
+            internal SassSafeStringOptionHandle(string optionValue) :
+                  base(IntPtr.Zero, true)
+            {
+                handle = Marshal.StringToCoTaskMemAnsi(optionValue);
+            }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
             protected override bool ReleaseHandle()
             {
-                sass_delete_data_context(handle);
+                Marshal.FreeCoTaskMem(handle);
                 return true;
             }
 
-            protected override SassResult CompileInternalContext()
-            {
-                sass_compile_data_context(this);
-                return GetResult();
-            }
-
-            protected override void SetOverriddenOptions(IntPtr sassOptionsInternal, ISassOptions sassOptions)
-            {
-                if (!string.IsNullOrWhiteSpace(sassOptions.InputPath))
-                    sass_option_set_input_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.InputPath));
-            }
+            public override bool IsInvalid => handle == IntPtr.Zero;
         }
     }
-}

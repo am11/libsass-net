@@ -1,4 +1,7 @@
 ﻿using System;
+using Sass.Compiler;
+using Sass.Compiler.Context;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Types
 {
@@ -12,7 +15,7 @@ namespace Sass.Types
                 return _cachedPtr;
 
             validityEventHandler += (this as ISassExportableType).OnInvalidated;
-            return _cachedPtr = SassCompiler.sass_make_null();
+            return _cachedPtr = sass_make_null();
         }
 
         private SassNull()

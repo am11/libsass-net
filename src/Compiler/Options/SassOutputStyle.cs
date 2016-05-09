@@ -1,4 +1,4 @@
-﻿namespace Sass
+﻿namespace Sass.Compiler.Options
 {
     public enum SassOutputStyle
     {

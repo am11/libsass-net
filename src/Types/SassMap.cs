@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sass.Compiler;
+using Sass.Compiler.Context;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Types
 {
@@ -64,7 +67,7 @@ namespace Sass.Types
 
             WalkAndEnsureDependencies(new List<SassMap>());
 
-            var map = SassCompiler.sass_make_map(Values.Count);
+            var map = sass_make_map(Values.Count);
             var index = 0;
 
             foreach (var item in Values)
@@ -72,10 +75,8 @@ namespace Sass.Types
                 var exportableKey = (ISassExportableType)item.Key;
                 var exportableValue = (ISassExportableType)item.Value;
 
-                SassCompiler.sass_map_set_key(
-                    map, index, exportableKey.GetInternalTypePtr(validityEventHandler));
-                SassCompiler.sass_map_set_value(
-                    map, index, exportableValue.GetInternalTypePtr(validityEventHandler));
+                sass_map_set_key(map, index, exportableKey.GetInternalTypePtr(validityEventHandler));
+                sass_map_set_value(map, index, exportableValue.GetInternalTypePtr(validityEventHandler));
                 index++;
             }
 

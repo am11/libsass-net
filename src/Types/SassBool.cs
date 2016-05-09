@@ -1,4 +1,7 @@
 ﻿using System;
+using Sass.Compiler;
+using Sass.Compiler.Context;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Types
 {
@@ -28,14 +31,14 @@ namespace Sass.Types
                 if (_trueValue != default(IntPtr))
                     return _trueValue;
 
-                returnValue = _trueValue = SassCompiler.sass_make_boolean(true);
+                returnValue = _trueValue = sass_make_boolean(true);
             }
             else
             {
                 if (_falseValue != default(IntPtr))
                     return _falseValue;
 
-                returnValue = _falseValue = SassCompiler.sass_make_boolean(false);
+                returnValue = _falseValue = sass_make_boolean(false);
             }
 
             validityEventHandler += (this as ISassExportableType).OnInvalidated;

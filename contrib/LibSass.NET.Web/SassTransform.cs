@@ -20,6 +20,8 @@
 
 using System.Linq;
 using System.Web.Optimization;
+using Sass.Compiler;
+using Sass.Compiler.Options;
 
 namespace Sass.Web
 {

@@ -21,6 +21,8 @@
 using System;
 using System.IO;
 using System.Web;
+using Sass.Compiler;
+using Sass.Compiler.Options;
 
 namespace Sass.Web
 {
