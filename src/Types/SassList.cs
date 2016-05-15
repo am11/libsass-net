@@ -23,7 +23,9 @@ namespace Sass.Types
         internal SassList(IntPtr rawPointer)
         {
             Values = GetSassArguments(rawPointer).ToList();
-            Separator = sass_list_get_separator(rawPointer);
+
+            var sep = sass_list_get_separator(rawPointer);
+            Separator = (SassListSeparator)Enum.GetValues(typeof(SassListSeparator)).GetValue(sep);
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace Sass.Types
 
         public override string ToString()
         {
-            return string.Join(Separator.ToString(),
+            return string.Join(Separator.ToEnumString(),
                                Values.Select(v => v.ToString()));
         }
 

@@ -136,7 +136,7 @@ namespace Sass.Compiler
         internal static extern IntPtr sass_make_function_list(int @length);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SassListSeparator sass_list_get_separator(IntPtr @value);
+        internal static extern short sass_list_get_separator(IntPtr @value);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_make_function(SassSafeStringHandle @signature, SassFunctionDelegate @cb, IntPtr @cookie);
