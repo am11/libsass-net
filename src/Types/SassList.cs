@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sass.Compiler.Context;
 using static Sass.Compiler.SassExterns;
+using static Sass.Types.TypeFactory;
 
 namespace Sass.Types
 {
@@ -11,10 +12,19 @@ namespace Sass.Types
         private bool _ensured;
         private IntPtr _cachedPtr;
 
-        public List<ISassType> Values { get; set; } = new List<ISassType>();
+        public List<ISassType> Values { get; set; }
         public SassListSeparator Separator { get; set; } = SassListSeparator.Space;
-        
-        internal SassList(IntPtr rawPointer) { /* TODO */ }
+
+        public SassList()
+        {
+            Values = new List<ISassType>();
+        }
+
+        internal SassList(IntPtr rawPointer)
+        {
+            Values = GetSassArguments(rawPointer).ToList();
+            Separator = sass_list_get_separator(rawPointer);
+        }
 
         /// <summary>
         /// Recursively ensures:

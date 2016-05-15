@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sass.Compiler.Context;
 using static Sass.Compiler.SassExterns;
+using static Sass.Types.TypeFactory;
 
 namespace Sass.Types
 {
@@ -11,10 +12,27 @@ namespace Sass.Types
         private bool _ensured;
         private IntPtr _cachedPtr;
 
-        public Dictionary<ISassType, ISassType> Values { get; set; } =
-            new Dictionary<ISassType, ISassType>();
+        public Dictionary<ISassType, ISassType> Values { get; set; }
 
-        internal SassMap(IntPtr rawPointer) { /* TODO */ }
+        public SassMap()
+        {
+            Values = new Dictionary<ISassType, ISassType>();
+        }
+
+        internal SassMap(IntPtr rawPointer)
+        {
+            int length = sass_map_get_length(rawPointer);
+
+            Values = new Dictionary<ISassType, ISassType>(length);
+
+            for (int i = 0; i < length; ++i)
+            {
+                var key = GetSassType(sass_map_get_key(rawPointer, i));
+                var value = GetSassType(sass_map_get_value(rawPointer, i));
+
+                Values[key] = value;
+            }
+        }
 
         /// <summary>
         /// Recursively ensures:

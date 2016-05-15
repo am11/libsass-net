@@ -35,9 +35,9 @@ namespace Sass.Types
             return values;
         }
 
-        private static ISassType GetSassType(IntPtr rawPointer)
+        internal static ISassType GetSassType(IntPtr rawPointer)
         {
-            SassTag tag = (SassTag)sass_value_get_tag(rawPointer);
+            SassTag tag = sass_value_get_tag(rawPointer);
 
             switch (tag)
             {

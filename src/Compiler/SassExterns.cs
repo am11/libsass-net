@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Sass.Compiler.Context;
 using Sass.Compiler.Options;
+using Sass.Types;
 
 // ReSharper disable InconsistentNaming
 
@@ -129,19 +130,31 @@ namespace Sass.Compiler
         internal static extern IntPtr sass_make_function_list(int @length);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern SassListSeparator sass_list_get_separator(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_make_function(string @signature, SassFunctionDelegate @cb, IntPtr @cookie);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_importer_get_cookie(IntPtr @cb);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int sass_value_get_tag(IntPtr @value);
+        internal static extern SassTag sass_value_get_tag(IntPtr @value);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int sass_list_get_length(IntPtr @value);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_list_get_value(IntPtr @value, int @index);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int sass_map_get_length(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_map_get_key(IntPtr @value, int @index);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_map_get_value(IntPtr @value, int @index);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern double sass_number_get_value(IntPtr @value);
