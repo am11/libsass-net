@@ -125,7 +125,7 @@ namespace Sass.CommandLine
 
             sassOptions.Functions = new SassFunctionCollection
             {
-                ["foo(blah, param2)"] = (options, argv) => null // do something with argument vector (argv)
+                ["foo(blah, param2)"] = (options, signature, argv) => null // do something with argument vector (argv)
             };
 
             var sass = new SassCompiler(sassOptions);

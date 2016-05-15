@@ -21,6 +21,7 @@
 using System;
 using Sass.Compiler.Options;
 using Sass.Types;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Compiler.Context
 {
@@ -29,7 +30,7 @@ namespace Sass.Compiler.Context
         private IntPtr GetCustomFunctionsHeadPtr(SassFunctionCollection customFunctions)
         {
             int length = customFunctions.Count;
-            IntPtr cFunctions = SassExterns.sass_make_function_list(customFunctions.Count);
+            IntPtr cFunctions = sass_make_function_list(customFunctions.Count);
 
             for (int i = 0; i < length; ++i)
             {
@@ -38,8 +39,8 @@ namespace Sass.Compiler.Context
 
                 _functionsCallbackDictionary.Add(pointer, customFunction.CustomFunctionDelegate);
 
-                var cb = SassExterns.sass_make_function(customFunction.Signature, SassFunctionCallback, pointer);
-                SassExterns.sass_function_set_list_entry(cFunctions, i, cb);
+                var cb = sass_make_function(customFunction.Signature, SassFunctionCallback, pointer);
+                sass_function_set_list_entry(cFunctions, i, cb);
             }
 
             return cFunctions;
@@ -48,8 +49,14 @@ namespace Sass.Compiler.Context
         private IntPtr SassFunctionCallback(IntPtr sassValues, IntPtr callback, IntPtr compiler)
         {
             ISassType[] convertedValues = TypeFactory.GetSassArguments(sassValues);
-            CustomFunctionDelegate customFunctionCallback = _functionsCallbackDictionary[SassExterns.sass_function_get_cookie(callback)];
-            ISassType returnedValue = customFunctionCallback(_sassOptions, convertedValues);
+
+            IntPtr signaturePtr = sass_function_get_signature(callback);
+            string signature = PtrToString(signaturePtr);
+
+            IntPtr cookiePtr = sass_function_get_cookie(callback);
+            CustomFunctionDelegate customFunctionCallback = _functionsCallbackDictionary[cookiePtr];
+
+            ISassType returnedValue = customFunctionCallback(_sassOptions, signature, convertedValues);
 
             return TypeFactory.GetRawPointer(returnedValue, ValidityEvent);
         }

@@ -40,5 +40,5 @@ namespace Sass.Compiler.Options
     /// List of values passed to the function in Sass code
     /// </param>
     /// <returns>List of SassImport objects.</returns>
-    public delegate ISassType CustomFunctionDelegate(ISassOptions sassOptions, params ISassType[] sassValues);
+    public delegate ISassType CustomFunctionDelegate(ISassOptions sassOptions, string signature, params ISassType[] sassValues);
 }

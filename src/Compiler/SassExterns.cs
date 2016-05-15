@@ -178,6 +178,9 @@ namespace Sass.Compiler
         internal static extern void sass_function_set_list_entry(IntPtr @list, int @pos, IntPtr @cb);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_function_get_signature(IntPtr cb);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void sass_import_set_list_entry(IntPtr @list, int @idx, IntPtr @entry);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]

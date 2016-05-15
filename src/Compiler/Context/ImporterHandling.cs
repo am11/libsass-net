@@ -20,6 +20,7 @@
 
 using System;
 using Sass.Compiler.Options;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Compiler.Context
 {
@@ -28,7 +29,7 @@ namespace Sass.Compiler.Context
         private IntPtr GetCustomImportersHeadPtr(CustomImportDelegate[] customImporters)
         {
             int length = customImporters.Length;
-            IntPtr cImporters = SassExterns.sass_make_importer_list(customImporters.Length);
+            IntPtr cImporters = sass_make_importer_list(customImporters.Length);
 
             for (int i = 0; i < length; ++i)
             {
@@ -37,8 +38,8 @@ namespace Sass.Compiler.Context
 
                 _importersCallbackDictionary.Add(pointer, customImporter);
 
-                var entry = SassExterns.sass_make_importer(SassImporterCallback, length - i - 1, pointer);
-                SassExterns.sass_importer_set_list_entry(cImporters, i, entry);
+                var entry = sass_make_importer(SassImporterCallback, length - i - 1, pointer);
+                sass_importer_set_list_entry(cImporters, i, entry);
             }
 
             return cImporters;
@@ -46,33 +47,36 @@ namespace Sass.Compiler.Context
 
         private IntPtr SassImporterCallback(IntPtr url, IntPtr callback, IntPtr compiler)
         {
+            IntPtr cookiePtr = sass_importer_get_cookie(callback);
+            CustomImportDelegate customImportCallback = _importersCallbackDictionary[cookiePtr];
+
+            IntPtr parentImporterPtr = sass_compiler_get_last_import(compiler);
+            IntPtr absolutePathPtr = sass_import_get_abs_path(parentImporterPtr);
+            string parentImport = PtrToString(absolutePathPtr);
             string currrentImport = PtrToString(url);
-            IntPtr parentImporterPtr = SassExterns.sass_compiler_get_last_import(compiler);
-            string parentImport = PtrToString(SassExterns.sass_import_get_abs_path(parentImporterPtr));
-            CustomImportDelegate customImportCallback = _importersCallbackDictionary[SassExterns.sass_importer_get_cookie(callback)];
             SassImport[] importsArray = customImportCallback(currrentImport, parentImport, _sassOptions);
 
             if (importsArray == null)
                 return IntPtr.Zero;
 
-            IntPtr cImportsList = SassExterns.sass_make_import_list(importsArray.Length);
+            IntPtr cImportsList = sass_make_import_list(importsArray.Length);
 
             for (int i = 0; i < importsArray.Length; ++i)
             {
                 IntPtr entry;
                 if (string.IsNullOrEmpty(importsArray[i].Error))
                 {
-                    entry = SassExterns.sass_make_import_entry(EncodeAsUtf8String(importsArray[i].Path),
+                    entry = sass_make_import_entry(EncodeAsUtf8String(importsArray[i].Path),
                                                    EncodeAsUtf8IntPtr(importsArray[i].Data),
                                                    EncodeAsUtf8IntPtr(importsArray[i].Map));
                 }
                 else
                 {
-                    entry = SassExterns.sass_make_import_entry(string.Empty, IntPtr.Zero, IntPtr.Zero);
-                    SassExterns.sass_import_set_error(entry, importsArray[i].Error, -1, -1);
+                    entry = sass_make_import_entry(string.Empty, IntPtr.Zero, IntPtr.Zero);
+                    sass_import_set_error(entry, importsArray[i].Error, -1, -1);
                 }
 
-                SassExterns.sass_import_set_list_entry(cImportsList, i, entry);
+                sass_import_set_list_entry(cImportsList, i, entry);
             }
 
             return cImportsList;
