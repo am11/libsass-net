@@ -3,4 +3,4 @@
 	url = https://github.com/sass/sass-spec
 [submodule "libsass"]
 	path = src/libsass
-	url = https://github.com/am11/libsass
+	url = https://github.com/sass/libsass
