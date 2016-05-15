@@ -25,7 +25,7 @@ namespace Sass.Compiler.Context
         internal static string PtrToString(IntPtr handle)
         {
             if (handle == IntPtr.Zero)
-                return null;
+                return string.Empty;
 
             var data = new List<byte>();
             var offset = 0;

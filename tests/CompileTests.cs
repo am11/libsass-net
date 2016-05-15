@@ -9,14 +9,17 @@ namespace Sass.Tests
         [Fact]
         public void can_compile_simple_string()
         {
-            var sass = new SassCompiler(new SassOptions { Data = "body { color: red; }" });
-            Assert.NotEmpty(sass.Compile().Output);
+            var options = new SassOptions {Data = "body { color: red; }"};
+            var sass = new SassCompiler(options);
+            var result = sass.Compile();
+            Assert.NotEmpty(result.Output);
         }
 
         [Fact]
         public void can_compile_file()
         {
-            var sass = new SassCompiler(new SassOptions { InputPath = "example.scss", IncludeSourceComments = false });
+            var options = new SassOptions {InputPath = "Fixtures/example.scss", IncludeSourceComments = false};
+            var sass = new SassCompiler(options);
             var result = sass.Compile();
             Assert.NotEmpty(result.Output);
         }
@@ -24,7 +27,8 @@ namespace Sass.Tests
         [Fact]
         public void when_source_map_file_specfied_should_return_sourcemap_data()
         {
-            var sass = new SassCompiler(new SassOptions { InputPath = "example.scss", SourceMapFile = "example.css.map" });
+            var options = new SassOptions {InputPath = "Fixtures/example.scss", SourceMapFile = "Fixtures/example.css.map"};
+            var sass = new SassCompiler(options);
             var result = sass.Compile();
             Assert.NotEmpty(result.SourceMap);
         }
