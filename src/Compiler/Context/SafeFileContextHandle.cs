@@ -20,25 +20,26 @@
 
 using System.Runtime.ConstrainedExecution;
 using Sass.Compiler.Options;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Compiler.Context
 {
         internal sealed class SassSafeFileContextHandle : SassSafeContextHandle
         {
             internal SassSafeFileContextHandle(ISassOptions sassOptions) :
-                base(sassOptions, SassExterns.sass_make_file_context(EncodeAsUtf8String(sassOptions.InputPath)))
+                base(sassOptions, sass_make_file_context(EncodeAsUtf8String(sassOptions.InputPath)))
             { }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
             protected override bool ReleaseHandle()
             {
-                SassExterns.sass_delete_file_context(handle);
+                sass_delete_file_context(handle);
                 return true;
             }
 
             protected override SassResult CompileInternalContext()
             {
-                SassExterns.sass_compile_file_context(this);
+                sass_compile_file_context(this);
                 return GetResult();
             }
         }

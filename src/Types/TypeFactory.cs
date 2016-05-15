@@ -19,7 +19,6 @@ namespace Sass.Types
 
     internal class TypeFactory
     {
-
         internal static ISassType[] GetSassArguments(IntPtr rawPointer)
         {
             var length = sass_list_get_length(rawPointer);

@@ -21,32 +21,33 @@
 using System;
 using System.Runtime.ConstrainedExecution;
 using Sass.Compiler.Options;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Compiler.Context
 {
     internal sealed class SassSafeDataContextHandle : SassSafeContextHandle
     {
         internal SassSafeDataContextHandle(ISassOptions sassOptions) :
-            base(sassOptions, SassExterns.sass_make_data_context(EncodeAsUtf8IntPtr(sassOptions.Data)))
+            base(sassOptions, sass_make_data_context(EncodeAsUtf8IntPtr(sassOptions.Data)))
         { }
 
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         protected override bool ReleaseHandle()
         {
-            SassExterns.sass_delete_data_context(handle);
+            sass_delete_data_context(handle);
             return true;
         }
 
         protected override SassResult CompileInternalContext()
         {
-            SassExterns.sass_compile_data_context(this);
+            sass_compile_data_context(this);
             return GetResult();
         }
 
         protected override void SetOverriddenOptions(IntPtr sassOptionsInternal, ISassOptions sassOptions)
         {
             if (!string.IsNullOrWhiteSpace(sassOptions.InputPath))
-                SassExterns.sass_option_set_input_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.InputPath));
+                sass_option_set_input_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.InputPath));
         }
     }
 }
