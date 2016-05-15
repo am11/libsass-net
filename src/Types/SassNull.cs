@@ -9,12 +9,14 @@ namespace Sass.Types
         private static IntPtr _cachedPtr;
         private static SassNull _instance;
 
-        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler, bool dontCache)
         {
             if (_cachedPtr != default(IntPtr))
                 return _cachedPtr;
 
-            validityEventHandler += (this as ISassExportableType).OnInvalidated;
+            if (!dontCache)
+                validityEventHandler += (this as ISassExportableType).OnInvalidated;
+
             return _cachedPtr = sass_make_null();
         }
 

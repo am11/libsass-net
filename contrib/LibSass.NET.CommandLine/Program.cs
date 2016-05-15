@@ -2,6 +2,7 @@
 using System.Text;
 using Sass.Compiler;
 using Sass.Compiler.Options;
+using Sass.Types;
 
 namespace Sass.CommandLine
 {
@@ -22,7 +23,7 @@ namespace Sass.CommandLine
                 SourceMapFile = "test.css.map",
                 IncludePath = "subdir1;/temp/subdir2",
                 IncludePaths = new[] { "subdir3", "/temp/subdir2" },
-                Data = "@import 'MY_VALUE/BLAH\\\\FOO';@import 'g.scss';.Sáss-UŢF8-ταυ{b:c;}",
+                Data = "@import 'MY_VALUE/BLAH\\\\FOO';@import 'g.scss';.Sáss-UŢF8-ταυ{b:f;};.append{val:foo(foo, 23.8)}",
                 //
                 // Note: Custom import is an array of delegates, each returning array of SassImport.
                 //
@@ -125,13 +126,35 @@ namespace Sass.CommandLine
 
             sassOptions.Functions = new SassFunctionCollection
             {
-                ["foo(blah, param2)"] = (options, signature, argv) => { return null; } // do something with argument vector (argv)
+                ["foo($foo, $bar)"] = (sassOpions, signature, values) =>
+                {
+                    SassString foo = (SassString)values[0];
+                    SassNumber bar = (SassNumber)values[1];
+
+                    Console.WriteLine($"foo: {foo}");
+                    Console.WriteLine($"bar: {bar}");
+
+                    return new SassWarning("Trouble here!");
+                },
+                ["tada($list, $map)"] = GetTada
             };
 
             var sass = new SassCompiler(sassOptions);
             var result = sass.Compile();
             Console.WriteLine(result.ToString());
             Console.ReadKey();
+        }
+
+        private static ISassType GetTada(ISassOptions sassOptions, string signature, params ISassType[] sassValues)
+        {
+            SassList list = (SassList)sassValues[0];
+            SassMap map = (SassMap)sassValues[1];
+
+            Console.WriteLine($"list: {list}");
+            Console.WriteLine($"map: {map}");
+
+            // Console.WriteLine((sassValues[0] as SassString).Value);
+            return new SassString("tada!");
         }
     }
 }

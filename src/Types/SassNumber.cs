@@ -28,6 +28,17 @@ namespace Sass.Types
         /// </summary>
         public string Unit { get; set; }
 
+        public SassNumber(double value)
+        {
+            Value = value;
+        }
+
+        public SassNumber(double value, string unit)
+        {
+            Value = value;
+            Unit = unit;
+        }
+
         internal SassNumber(IntPtr rawPointer)
         {
             Value = sass_number_get_value(rawPointer);
@@ -39,13 +50,18 @@ namespace Sass.Types
             return $"{Value}{Unit}";
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler, bool dontCache)
         {
             if (_cachedPtr != default(IntPtr))
                 return _cachedPtr;
 
+            var value = sass_make_number(Value, new SassSafeStringHandle(Unit));
+
+            if (dontCache)
+                return value;
+
             validityEventHandler += (this as ISassExportableType).OnInvalidated;
-            return _cachedPtr = sass_make_number(Value, new SassSafeStringHandle(Unit));
+            return _cachedPtr = value;
         }
 
         void ISassExportableType.OnInvalidated()

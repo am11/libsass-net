@@ -14,6 +14,6 @@ namespace Sass.Types
         /// Instantiate the type on LibSass heap.
         /// </summary>
         /// <param name="validityEventHandler"></param>
-        IntPtr GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler);
+        IntPtr GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler, bool dontCache = false);
     }
 }

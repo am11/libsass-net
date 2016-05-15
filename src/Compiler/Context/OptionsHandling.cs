@@ -20,6 +20,7 @@
 
 using System;
 using Sass.Compiler.Options;
+using static Sass.Compiler.SassExterns;
 
 namespace Sass.Compiler.Context
 {
@@ -27,65 +28,65 @@ namespace Sass.Compiler.Context
     {   
         internal void SetOptions(ISassOptions sassOptions)
         {
-            IntPtr sassOptionsInternal = SassExterns.sass_context_get_options(this);
+            IntPtr sassOptionsInternal = sass_context_get_options(this);
 
-            SassExterns.sass_option_set_output_style(sassOptionsInternal, sassOptions.OutputStyle);
-            SassExterns.sass_option_set_source_comments(sassOptionsInternal, sassOptions.IncludeSourceComments);
-            SassExterns.sass_option_set_source_map_embed(sassOptionsInternal, sassOptions.EmbedSourceMap);
-            SassExterns.sass_option_set_omit_source_map_url(sassOptionsInternal, sassOptions.OmitSourceMapUrl);
-            SassExterns.sass_option_set_is_indented_syntax_src(sassOptionsInternal, sassOptions.IsIndentedSyntax);
-            SassExterns.sass_option_set_source_map_contents(sassOptionsInternal, sassOptions.IncludeSourceMapContents);
+            sass_option_set_output_style(sassOptionsInternal, sassOptions.OutputStyle);
+            sass_option_set_source_comments(sassOptionsInternal, sassOptions.IncludeSourceComments);
+            sass_option_set_source_map_embed(sassOptionsInternal, sassOptions.EmbedSourceMap);
+            sass_option_set_omit_source_map_url(sassOptionsInternal, sassOptions.OmitSourceMapUrl);
+            sass_option_set_is_indented_syntax_src(sassOptionsInternal, sassOptions.IsIndentedSyntax);
+            sass_option_set_source_map_contents(sassOptionsInternal, sassOptions.IncludeSourceMapContents);
 
             if (sassOptions.Precision.HasValue)
-                SassExterns.sass_option_set_precision(sassOptionsInternal, sassOptions.Precision.Value);
+                sass_option_set_precision(sassOptionsInternal, sassOptions.Precision.Value);
 
             if (!string.IsNullOrWhiteSpace(sassOptions.OutputPath))
-                SassExterns.sass_option_set_output_path(sassOptionsInternal, new SassSafeStringHandle(sassOptions.OutputPath));
+                sass_option_set_output_path(sassOptionsInternal, new SassSafeStringHandle(sassOptions.OutputPath));
 
             if (!string.IsNullOrWhiteSpace(sassOptions.IncludePath))
-                SassExterns.sass_option_set_include_path(sassOptionsInternal, new SassSafeStringHandle(sassOptions.IncludePath));
+                sass_option_set_include_path(sassOptionsInternal, new SassSafeStringHandle(sassOptions.IncludePath));
 
             if (!string.IsNullOrWhiteSpace(sassOptions.SourceMapRoot))
-                SassExterns.sass_option_set_source_map_root(sassOptionsInternal, new SassSafeStringHandle(sassOptions.SourceMapRoot));
+                sass_option_set_source_map_root(sassOptionsInternal, new SassSafeStringHandle(sassOptions.SourceMapRoot));
 
             if (!string.IsNullOrWhiteSpace(sassOptions.SourceMapFile))
-                SassExterns.sass_option_set_source_map_file(sassOptionsInternal, new SassSafeStringHandle(sassOptions.SourceMapFile));
+                sass_option_set_source_map_file(sassOptionsInternal, new SassSafeStringHandle(sassOptions.SourceMapFile));
 
             // Indent can be whitespace.
             if (!string.IsNullOrEmpty(sassOptions.Indent))
             {
                 var indent = new SassSafeStringHandle(sassOptions.Indent);
-                SassExterns.sass_option_set_indent(sassOptionsInternal, indent);
+                sass_option_set_indent(sassOptionsInternal, indent);
             }
 
             // Linefeed can be whitespace (i.e. \r is a whitespace).
             if (!string.IsNullOrEmpty(sassOptions.Linefeed))
             {
                 var linefeed = new SassSafeStringHandle(sassOptions.Linefeed);
-                SassExterns.sass_option_set_linefeed(sassOptionsInternal, linefeed);
+                sass_option_set_linefeed(sassOptionsInternal, linefeed);
             }
 
             if (sassOptions.IncludePaths != null)
             {
                 foreach (var path in sassOptions.IncludePaths)
                 {
-                    SassExterns.sass_option_push_include_path(sassOptionsInternal, new SassSafeStringHandle(path));
+                    sass_option_push_include_path(sassOptionsInternal, new SassSafeStringHandle(path));
                 }
             }
 
             if (sassOptions.Importers != null)
             {
-                SassExterns.sass_option_set_c_importers(sassOptionsInternal, GetCustomImportersHeadPtr(sassOptions.Importers));
+                sass_option_set_c_importers(sassOptionsInternal, GetCustomImportersHeadPtr(sassOptions.Importers));
             }
 
             if (sassOptions.Headers != null)
             {
-                SassExterns.sass_option_set_c_headers(sassOptionsInternal, GetCustomImportersHeadPtr(sassOptions.Headers));
+                sass_option_set_c_headers(sassOptionsInternal, GetCustomImportersHeadPtr(sassOptions.Headers));
             }
 
             if (sassOptions.Functions != null)
             {
-                SassExterns.sass_option_set_c_headers(sassOptionsInternal, GetCustomFunctionsHeadPtr(sassOptions.Functions));
+                sass_option_set_c_functions(sassOptionsInternal, GetCustomFunctionsHeadPtr(sassOptions.Functions));
             }
 
             SetOverriddenOptions(sassOptionsInternal, sassOptions);

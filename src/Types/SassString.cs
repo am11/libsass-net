@@ -1,5 +1,6 @@
 ﻿using System;
 using Sass.Compiler.Context;
+using static Sass.Compiler.SassExterns;
 using static Sass.Compiler.Context.SassSafeContextHandle;
 
 namespace Sass.Types
@@ -16,16 +17,27 @@ namespace Sass.Types
 
         internal SassString(IntPtr rawPointer)
         {
-            Value = PtrToString(rawPointer);
+            var rawValue = sass_string_get_value(rawPointer);
+            Value = PtrToString(rawValue);
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
+        public override string ToString()
+        {
+            return Value;
+        }
+
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler, bool dontCache)
         {
             if (_cachedPtr != default(IntPtr))
                 return _cachedPtr;
 
+            var value = sass_make_string(new SassSafeStringHandle(EncodeAsUtf8String(Value)));
+
+            if (dontCache)
+                return value;
+
             validityEventHandler += (this as ISassExportableType).OnInvalidated;
-            return _cachedPtr = EncodeAsUtf8IntPtr(Value);
+            return _cachedPtr = value;
         }
 
         void ISassExportableType.OnInvalidated()

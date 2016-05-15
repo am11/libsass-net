@@ -21,14 +21,19 @@ namespace Sass.Types
             Message = PtrToString(rawValue);
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler, bool dontCache)
         {
             if (_cachedPtr != default(IntPtr))
                 return _cachedPtr;
 
+            var value = sass_make_warning(new SassSafeStringHandle(Message));
+
+            if (dontCache)
+                return value;
+
             validityEventHandler += (this as ISassExportableType).OnInvalidated;
 
-            return _cachedPtr = sass_make_warning(new SassSafeStringHandle(Message));
+            return _cachedPtr = value;
         }
 
         void ISassExportableType.OnInvalidated()

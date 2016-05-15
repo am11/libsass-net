@@ -58,7 +58,11 @@ namespace Sass.Compiler.Context
 
             ISassType returnedValue = customFunctionCallback(_sassOptions, signature, convertedValues);
 
-            return TypeFactory.GetRawPointer(returnedValue, ValidityEvent);
+            var ptr = TypeFactory.GetRawPointer(returnedValue, ValidityEvent);
+
+            ValidityEvent.Invoke();
+
+            return ptr;
         }
     }
 }

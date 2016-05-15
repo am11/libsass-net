@@ -52,6 +52,12 @@ namespace Sass.Compiler
         internal static extern IntPtr sass_make_boolean(bool @value);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_make_string(SassSafeStringHandle @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_string_get_value(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern bool sass_boolean_get_value(IntPtr @value);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
@@ -246,6 +252,9 @@ namespace Sass.Compiler
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void sass_option_set_c_headers(IntPtr @sass_options /*options*/, IntPtr @c_importers);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void sass_option_set_c_functions(IntPtr @sass_options /*options*/, IntPtr @c_functions);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void sass_option_push_include_path(IntPtr @sass_options /*options*/, SassSafeStringHandle @path);

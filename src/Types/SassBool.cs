@@ -28,7 +28,7 @@ namespace Sass.Types
             Value = value;
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler, bool dontCache)
         {
             IntPtr returnValue;
 
@@ -47,7 +47,9 @@ namespace Sass.Types
                 returnValue = _falseValue = sass_make_boolean(false);
             }
 
-            validityEventHandler += (this as ISassExportableType).OnInvalidated;
+            if (!dontCache)
+                validityEventHandler += (this as ISassExportableType).OnInvalidated;
+
             return returnValue;
         }
 

@@ -8,10 +8,26 @@ namespace Sass.Types
     {
         private IntPtr _cachedPtr;
 
-        public double Red { get; set; } = 0;
-        public double Green { get; set; } = 0;
-        public double Blue { get; set; } = 0;
-        public double Alpha { get; set; } = 1;
+        public double Red { get; set; }
+        public double Green { get; set; }
+        public double Blue { get; set; }
+        public double Alpha { get; set; }
+
+        public SassColor()
+        {
+            Red = 0;
+            Green = 0;
+            Blue = 0;
+            Alpha = 1;
+        }
+
+        public SassColor(double red, double green, double blue, double alpha)
+        {
+            Red = red;
+            Green = green;
+            Blue = blue;
+            Alpha = alpha;
+        }
 
         internal SassColor(IntPtr rawPointer)
         {
@@ -31,13 +47,18 @@ namespace Sass.Types
             return $"rgba({red},{green},{blue},{alpha})";
         }
 
-        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
+        IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler, bool dontCache)
         {
             if (_cachedPtr != default(IntPtr))
                 return _cachedPtr;
 
+            var value = sass_make_color(Red, Green, Blue, Alpha); ;
+
+            if (dontCache)
+                return value;
+
             validityEventHandler += (this as ISassExportableType).OnInvalidated;
-            return _cachedPtr = sass_make_color(Red, Green, Blue, Alpha);
+            return _cachedPtr = value;
         }
 
         void ISassExportableType.OnInvalidated()

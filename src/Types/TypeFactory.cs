@@ -80,7 +80,7 @@ namespace Sass.Types
             var sassExportableType = returnedValue as ISassExportableType;
 
             if (sassExportableType != null)
-                return sassExportableType.GetInternalTypePtr(onValidityEvent);
+                return sassExportableType.GetInternalTypePtr(onValidityEvent, true);
 
             // This should never happen. I could not find anyway to keep both
             // OOP and Resharper satisfied with the current design of ISassType
