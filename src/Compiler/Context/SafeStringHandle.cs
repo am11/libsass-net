@@ -27,12 +27,13 @@ namespace Sass.Compiler.Context
 {
         [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
         [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
-        internal sealed class SassSafeStringOptionHandle : SafeHandle
+        internal sealed class SassSafeStringHandle : SafeHandle
         {
-            internal SassSafeStringOptionHandle(string optionValue) :
+            internal SassSafeStringHandle(string optionValue) :
                   base(IntPtr.Zero, true)
             {
-                handle = Marshal.StringToCoTaskMemAnsi(optionValue);
+                string encodedValue = SassSafeContextHandle.EncodeAsUtf8String(optionValue);
+                handle = Marshal.StringToCoTaskMemAnsi(encodedValue);
             }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]

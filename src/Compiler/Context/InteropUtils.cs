@@ -43,7 +43,7 @@ namespace Sass.Compiler.Context
             return Encoding.UTF8.GetString(data.ToArray());
         }
 
-        protected static string EncodeAsUtf8String(string utf16String)
+        internal static string EncodeAsUtf8String(string utf16String)
         {
             if (string.IsNullOrEmpty(utf16String))
             {
@@ -64,7 +64,7 @@ namespace Sass.Compiler.Context
                 return IntPtr.Zero;
             }
 
-            return SassExterns.sass_copy_c_string(EncodeAsUtf8String(utf16String));
+            return SassExterns.sass_copy_c_string(new SassSafeStringHandle(utf16String));
         }
 
     }

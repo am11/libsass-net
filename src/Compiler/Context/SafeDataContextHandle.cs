@@ -47,7 +47,7 @@ namespace Sass.Compiler.Context
         protected override void SetOverriddenOptions(IntPtr sassOptionsInternal, ISassOptions sassOptions)
         {
             if (!string.IsNullOrWhiteSpace(sassOptions.InputPath))
-                sass_option_set_input_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.InputPath));
+                sass_option_set_input_path(sassOptionsInternal, new SassSafeStringHandle(sassOptions.InputPath));
         }
     }
 }

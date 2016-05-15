@@ -40,6 +40,8 @@
     <Compile Include="Compiler\Context\OptionsHandling.cs" />
     <Compile Include="Types\SassBool.cs" />
     <Compile Include="Types\SassNull.cs" />
+    <Compile Include="Types\SassError.cs" />
+    <Compile Include="Types\SassWarning.cs" />
     <Compile Include="Types\SassString.cs" />
     <Compile Include="Types\SassListSeparator.cs" />
     <Compile Include="Types\SassTypeException.cs" />
@@ -54,7 +56,7 @@
     <Compile Include="Compiler\Context\SafeContextHandle.cs" />
     <Compile Include="Compiler\Context\SafeDataContextHandle.cs" />
     <Compile Include="Compiler\Context\SafeFileContextHandle.cs" />
-    <Compile Include="Compiler\Context\SafeStringOptionHandle.cs" />
+    <Compile Include="Compiler\Context\SafeStringHandle.cs" />
     <Compile Include="Compiler\SassCompiler.cs" />
     <Compile Include="Compiler\SassExterns.cs" />
     <Compile Include="Compiler\Options\SassImport.cs" />

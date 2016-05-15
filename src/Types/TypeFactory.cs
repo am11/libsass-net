@@ -62,9 +62,11 @@ namespace Sass.Types
                 case SassTag.SassNull:
                     return SassNull.Instance;
 
-                    // TODO: Implement @error and @warn
-                    //case SassTag.SassError:
-                    //case SassTag.SassWarning:
+                case SassTag.SassError:
+                    return new SassError(rawPointer);
+
+                case SassTag.SassWarning:
+                    return new SassWarning(rawPointer);
             }
 
             return null;

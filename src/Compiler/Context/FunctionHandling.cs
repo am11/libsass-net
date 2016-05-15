@@ -39,7 +39,7 @@ namespace Sass.Compiler.Context
 
                 _functionsCallbackDictionary.Add(pointer, customFunction.CustomFunctionDelegate);
 
-                var cb = sass_make_function(customFunction.Signature, SassFunctionCallback, pointer);
+                var cb = sass_make_function(new SassSafeStringHandle(customFunction.Signature), SassFunctionCallback, pointer);
                 sass_function_set_list_entry(cFunctions, i, cb);
             }
 

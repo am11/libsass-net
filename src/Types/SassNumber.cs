@@ -45,7 +45,7 @@ namespace Sass.Types
                 return _cachedPtr;
 
             validityEventHandler += (this as ISassExportableType).OnInvalidated;
-            return _cachedPtr = sass_make_number(Value, Unit.ToString());
+            return _cachedPtr = sass_make_number(Value, new SassSafeStringHandle(Unit));
         }
 
         void ISassExportableType.OnInvalidated()

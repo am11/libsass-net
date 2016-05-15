@@ -66,14 +66,14 @@ namespace Sass.Compiler.Context
                 IntPtr entry;
                 if (string.IsNullOrEmpty(importsArray[i].Error))
                 {
-                    entry = sass_make_import_entry(EncodeAsUtf8String(importsArray[i].Path),
+                    entry = sass_make_import_entry(new SassSafeStringHandle(importsArray[i].Path),
                                                    EncodeAsUtf8IntPtr(importsArray[i].Data),
                                                    EncodeAsUtf8IntPtr(importsArray[i].Map));
                 }
                 else
                 {
-                    entry = sass_make_import_entry(string.Empty, IntPtr.Zero, IntPtr.Zero);
-                    sass_import_set_error(entry, importsArray[i].Error, -1, -1);
+                    entry = sass_make_import_entry(new SassSafeStringHandle(string.Empty), IntPtr.Zero, IntPtr.Zero);
+                    sass_import_set_error(entry, EncodeAsUtf8IntPtr(importsArray[i].Error), -1, -1);
                 }
 
                 sass_import_set_list_entry(cImportsList, i, entry);

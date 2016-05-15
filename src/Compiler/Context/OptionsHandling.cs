@@ -40,28 +40,28 @@ namespace Sass.Compiler.Context
                 SassExterns.sass_option_set_precision(sassOptionsInternal, sassOptions.Precision.Value);
 
             if (!string.IsNullOrWhiteSpace(sassOptions.OutputPath))
-                SassExterns.sass_option_set_output_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.OutputPath));
+                SassExterns.sass_option_set_output_path(sassOptionsInternal, new SassSafeStringHandle(sassOptions.OutputPath));
 
             if (!string.IsNullOrWhiteSpace(sassOptions.IncludePath))
-                SassExterns.sass_option_set_include_path(sassOptionsInternal, EncodeAsUtf8String(sassOptions.IncludePath));
+                SassExterns.sass_option_set_include_path(sassOptionsInternal, new SassSafeStringHandle(sassOptions.IncludePath));
 
             if (!string.IsNullOrWhiteSpace(sassOptions.SourceMapRoot))
-                SassExterns.sass_option_set_source_map_root(sassOptionsInternal, EncodeAsUtf8String(sassOptions.SourceMapRoot));
+                SassExterns.sass_option_set_source_map_root(sassOptionsInternal, new SassSafeStringHandle(sassOptions.SourceMapRoot));
 
             if (!string.IsNullOrWhiteSpace(sassOptions.SourceMapFile))
-                SassExterns.sass_option_set_source_map_file(sassOptionsInternal, EncodeAsUtf8String(sassOptions.SourceMapFile));
+                SassExterns.sass_option_set_source_map_file(sassOptionsInternal, new SassSafeStringHandle(sassOptions.SourceMapFile));
 
             // Indent can be whitespace.
             if (!string.IsNullOrEmpty(sassOptions.Indent))
             {
-                var indent = new SassSafeStringOptionHandle(EncodeAsUtf8String(sassOptions.Indent));
+                var indent = new SassSafeStringHandle(sassOptions.Indent);
                 SassExterns.sass_option_set_indent(sassOptionsInternal, indent);
             }
 
             // Linefeed can be whitespace (i.e. \r is a whitespace).
             if (!string.IsNullOrEmpty(sassOptions.Linefeed))
             {
-                var linefeed = new SassSafeStringOptionHandle(EncodeAsUtf8String(sassOptions.Linefeed));
+                var linefeed = new SassSafeStringHandle(sassOptions.Linefeed);
                 SassExterns.sass_option_set_linefeed(sassOptionsInternal, linefeed);
             }
 
@@ -69,7 +69,7 @@ namespace Sass.Compiler.Context
             {
                 foreach (var path in sassOptions.IncludePaths)
                 {
-                    SassExterns.sass_option_push_include_path(sassOptionsInternal, EncodeAsUtf8String(path));
+                    SassExterns.sass_option_push_include_path(sassOptionsInternal, new SassSafeStringHandle(path));
                 }
             }
 

@@ -27,7 +27,7 @@ namespace Sass.Compiler.Context
         internal sealed class SassSafeFileContextHandle : SassSafeContextHandle
         {
             internal SassSafeFileContextHandle(ISassOptions sassOptions) :
-                base(sassOptions, sass_make_file_context(EncodeAsUtf8String(sassOptions.InputPath)))
+                base(sassOptions, sass_make_file_context(new SassSafeStringHandle(sassOptions.InputPath)))
             { }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
