@@ -25,22 +25,19 @@ namespace Sass.Compiler.Context
 {
     internal abstract partial class SassSafeContextHandle
     {
-        private SassImporterDelegate _importerCallback;
-
         private IntPtr GetCustomImportersHeadPtr(CustomImportDelegate[] customImporters)
         {
             int length = customImporters.Length;
             IntPtr cImporters = SassExterns.sass_make_importer_list(customImporters.Length);
-            _importerCallback = SassImporterCallback;
 
             for (int i = 0; i < length; ++i)
             {
                 CustomImportDelegate customImporter = customImporters[i];
                 IntPtr pointer = customImporter.Method.MethodHandle.GetFunctionPointer();
 
-                _callbackDictionary.Add(pointer, customImporter);
+                _importersCallbackDictionary.Add(pointer, customImporter);
 
-                var entry = SassExterns.sass_make_importer(_importerCallback, length - i - 1, pointer);
+                var entry = SassExterns.sass_make_importer(SassImporterCallback, length - i - 1, pointer);
                 SassExterns.sass_importer_set_list_entry(cImporters, i, entry);
             }
 
@@ -52,7 +49,7 @@ namespace Sass.Compiler.Context
             string currrentImport = PtrToString(url);
             IntPtr parentImporterPtr = SassExterns.sass_compiler_get_last_import(compiler);
             string parentImport = PtrToString(SassExterns.sass_import_get_abs_path(parentImporterPtr));
-            CustomImportDelegate customImportCallback = _callbackDictionary[SassExterns.sass_importer_get_cookie(callback)];
+            CustomImportDelegate customImportCallback = _importersCallbackDictionary[SassExterns.sass_importer_get_cookie(callback)];
             SassImport[] importsArray = customImportCallback(currrentImport, parentImport, _sassOptions);
 
             if (importsArray == null)

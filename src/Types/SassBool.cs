@@ -1,5 +1,4 @@
 ﻿using System;
-using Sass.Compiler;
 using Sass.Compiler.Context;
 using static Sass.Compiler.SassExterns;
 
@@ -7,7 +6,7 @@ namespace Sass.Types
 {
     public class SassBool : ISassType, ISassExportableType
     {
-        private readonly bool _primitiveValue;
+        public bool Value { get; set; }
         private IntPtr _trueValue;
         private IntPtr _falseValue;
         private static SassBool _trueInstance;
@@ -17,16 +16,23 @@ namespace Sass.Types
 
         public static SassBool False => _falseInstance ?? (_falseInstance = new SassBool(false));
 
+        internal static SassBool GetBoolValue(IntPtr rawPointer)
+        {
+            return sass_boolean_get_value(rawPointer) ?
+                   _trueInstance :
+                   _falseInstance;
+        }
+
         private SassBool(bool value)
         {
-            _primitiveValue = value;
+            Value = value;
         }
 
         IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
         {
             IntPtr returnValue;
 
-            if (_primitiveValue)
+            if (Value)
             {
                 if (_trueValue != default(IntPtr))
                     return _trueValue;

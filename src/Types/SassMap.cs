@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sass.Compiler;
 using Sass.Compiler.Context;
 using static Sass.Compiler.SassExterns;
 
@@ -9,11 +8,13 @@ namespace Sass.Types
 {
     public class SassMap : ISassType, ISassExportableType
     {
+        private bool _ensured;
+        private IntPtr _cachedPtr;
+
         public Dictionary<ISassType, ISassType> Values { get; set; } =
             new Dictionary<ISassType, ISassType>();
 
-        private bool _ensured;
-        private IntPtr _cachedPtr;
+        internal SassMap(IntPtr rawPointer) { /* TODO */ }
 
         /// <summary>
         /// Recursively ensures:

@@ -7,8 +7,7 @@ namespace Sass.Compiler.Context
 {
     internal abstract partial class SassSafeContextHandle
     {
-
-        private static string[] PtrToStringArray(IntPtr stringArray)
+        internal static string[] PtrToStringArray(IntPtr stringArray)
         {
             if (stringArray == IntPtr.Zero)
                 return new string[0];
@@ -23,7 +22,7 @@ namespace Sass.Compiler.Context
             return members.ToArray();
         }
 
-        private static string PtrToString(IntPtr handle)
+        internal static string PtrToString(IntPtr handle)
         {
             if (handle == IntPtr.Zero)
                 return null;
@@ -58,7 +57,7 @@ namespace Sass.Compiler.Context
             return Encoding.Default.GetString(utf8Bytes);
         }
 
-        protected static IntPtr EncodeAsUtf8IntPtr(string utf16String)
+        internal static IntPtr EncodeAsUtf8IntPtr(string utf16String)
         {
             if (string.IsNullOrEmpty(utf16String))
             {

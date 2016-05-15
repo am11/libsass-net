@@ -9,8 +9,7 @@ namespace Sass.Compiler.Options
         /// Input path to read contents from.
         /// </summary>
         public string Signature { get; set; }
-
-
+        
         /// <summary>
         /// Callback delegate.
         /// </summary>

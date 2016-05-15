@@ -20,65 +20,38 @@
 
 using System;
 using Sass.Compiler.Options;
+using Sass.Types;
 
 namespace Sass.Compiler.Context
 {
     internal abstract partial class SassSafeContextHandle
     {
-        private SassFunctionDelegate _functionCallback;
-
         private IntPtr GetCustomFunctionsHeadPtr(SassFunctionCollection customFunctions)
         {
             int length = customFunctions.Count;
-            IntPtr cImporters = SassExterns.sass_make_importer_list(customFunctions.Count);
-            _functionCallback = SassImporterCallback;
+            IntPtr cFunctions = SassExterns.sass_make_function_list(customFunctions.Count);
 
             for (int i = 0; i < length; ++i)
             {
                 SassFunction customFunction = customFunctions[i];
                 IntPtr pointer = customFunction.CustomFunctionDelegate.Method.MethodHandle.GetFunctionPointer();
 
-               // _callbackDictionary.Add(pointer, customFunction);
+                _functionsCallbackDictionary.Add(pointer, customFunction.CustomFunctionDelegate);
 
-                var entry = SassExterns.sass_make_importer(_importerCallback, length - i - 1, pointer);
-                SassExterns.sass_importer_set_list_entry(cImporters, i, entry);
+                var cb = SassExterns.sass_make_function(customFunction.Signature, SassFunctionCallback, pointer);
+                SassExterns.sass_function_set_list_entry(cFunctions, i, cb);
             }
 
-            return cImporters;
+            return cFunctions;
         }
 
-        private IntPtr SassFunctionCallback(IntPtr url, IntPtr callback, IntPtr compiler)
+        private IntPtr SassFunctionCallback(IntPtr sassValues, IntPtr callback, IntPtr compiler)
         {
-            string currrentImport = PtrToString(url);
-            IntPtr parentImporterPtr = SassExterns.sass_compiler_get_last_import(compiler);
-            string parentImport = PtrToString(SassExterns.sass_import_get_abs_path(parentImporterPtr));
-            CustomImportDelegate customImportCallback = _callbackDictionary[SassExterns.sass_importer_get_cookie(callback)];
-            SassImport[] importsArray = customImportCallback(currrentImport, parentImport, _sassOptions);
+            ISassType[] convertedValues = TypeFactory.GetSassArguments(sassValues);
+            CustomFunctionDelegate customFunctionCallback = _functionsCallbackDictionary[SassExterns.sass_function_get_cookie(callback)];
+            ISassType returnedValue = customFunctionCallback(_sassOptions, convertedValues);
 
-            if (importsArray == null)
-                return IntPtr.Zero;
-
-            IntPtr cImportsList = SassExterns.sass_make_import_list(importsArray.Length);
-
-            for (int i = 0; i < importsArray.Length; ++i)
-            {
-                IntPtr entry;
-                if (string.IsNullOrEmpty(importsArray[i].Error))
-                {
-                    entry = SassExterns.sass_make_import_entry(EncodeAsUtf8String(importsArray[i].Path),
-                                                   EncodeAsUtf8IntPtr(importsArray[i].Data),
-                                                   EncodeAsUtf8IntPtr(importsArray[i].Map));
-                }
-                else
-                {
-                    entry = SassExterns.sass_make_import_entry(string.Empty, IntPtr.Zero, IntPtr.Zero);
-                    SassExterns.sass_import_set_error(entry, importsArray[i].Error, -1, -1);
-                }
-
-                SassExterns.sass_import_set_list_entry(cImportsList, i, entry);
-            }
-
-            return cImportsList;
+            return TypeFactory.GetRawPointer(returnedValue, ValidityEvent);
         }
     }
 }

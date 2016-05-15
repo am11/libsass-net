@@ -24,9 +24,7 @@ using Sass.Compiler.Options;
 namespace Sass.Compiler.Context
 {
     internal abstract partial class SassSafeContextHandle
-    {
-        private readonly ISassOptions _sassOptions;
-        
+    {   
         internal void SetOptions(ISassOptions sassOptions)
         {
             IntPtr sassOptionsInternal = SassExterns.sass_context_get_options(this);

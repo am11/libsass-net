@@ -1,13 +1,23 @@
 ﻿using System;
 using Sass.Compiler.Context;
-using static Sass.Compiler.SassExterns;
+using static Sass.Compiler.Context.SassSafeContextHandle;
 
 namespace Sass.Types
 {
-    internal class SassNull : ISassType, ISassExportableType
+    public class SassString : ISassType, ISassExportableType
     {
-        private static IntPtr _cachedPtr;
-        private static SassNull _instance;
+        private IntPtr _cachedPtr;
+        public string Value { get; set; }
+
+        public SassString(string value)
+        {
+            Value = value;
+        }
+
+        internal SassString(IntPtr rawPointer)
+        {
+            Value = PtrToString(rawPointer);
+        }
 
         IntPtr ISassExportableType.GetInternalTypePtr(InternalPtrValidityEventHandler validityEventHandler)
         {
@@ -15,13 +25,8 @@ namespace Sass.Types
                 return _cachedPtr;
 
             validityEventHandler += (this as ISassExportableType).OnInvalidated;
-            return _cachedPtr = sass_make_null();
+            return _cachedPtr = EncodeAsUtf8IntPtr(Value);
         }
-
-        internal static SassNull Instance => _instance ?? (_instance = new SassNull());
-
-        private SassNull()
-        { }
 
         void ISassExportableType.OnInvalidated()
         {

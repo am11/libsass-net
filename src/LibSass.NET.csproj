@@ -40,7 +40,7 @@
     <Compile Include="Compiler\Context\OptionsHandling.cs" />
     <Compile Include="Types\SassBool.cs" />
     <Compile Include="Types\SassNull.cs" />
-    <Compile Include="Types\SassUnit.cs" />
+    <Compile Include="Types\SassString.cs" />
     <Compile Include="Types\SassListSeparator.cs" />
     <Compile Include="Types\SassTypeException.cs" />
     <Compile Include="Types\SassNumber.cs" />
@@ -61,6 +61,7 @@
     <Compile Include="Compiler\Options\SassOptions.cs" />
     <Compile Include="Compiler\Options\SassOutputStyle.cs" />
     <Compile Include="Compiler\SassResult.cs" />
+    <Compile Include="Types\TypeFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libsassnet.nuspec" />

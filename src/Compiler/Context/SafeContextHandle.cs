@@ -33,16 +33,16 @@ namespace Sass.Compiler.Context
     [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
     internal abstract partial class SassSafeContextHandle : SafeHandle
     {
-        private readonly Dictionary<IntPtr, CustomImportDelegate> _callbackDictionary;
-        internal event InternalPtrValidityEventHandler ValidityEvent;
+        private readonly Dictionary<IntPtr, CustomImportDelegate> _importersCallbackDictionary = new Dictionary<IntPtr, CustomImportDelegate>();
+        private readonly Dictionary<IntPtr, CustomFunctionDelegate> _functionsCallbackDictionary = new Dictionary<IntPtr, CustomFunctionDelegate>();
+        internal event InternalPtrValidityEventHandler ValidityEvent = () => { };
+        private readonly ISassOptions _sassOptions;
 
         internal SassSafeContextHandle(ISassOptions sassOptions, IntPtr method) :
             base(IntPtr.Zero, true)
         {
             handle = method;
             _sassOptions = sassOptions;
-            ValidityEvent = () => { };
-            _callbackDictionary = new Dictionary<IntPtr, CustomImportDelegate>();
         }
 
         public override bool IsInvalid => handle == IntPtr.Zero;

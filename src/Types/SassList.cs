@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sass.Compiler;
 using Sass.Compiler.Context;
 using static Sass.Compiler.SassExterns;
 
@@ -9,11 +8,13 @@ namespace Sass.Types
 {
     public class SassList : ISassType, ISassExportableType
     {
-        public List<ISassType> Values { get; set; } = new List<ISassType>();
-        public SassListSeparator Separator { get; set; } = SassListSeparator.Space;
-
         private bool _ensured;
         private IntPtr _cachedPtr;
+
+        public List<ISassType> Values { get; set; } = new List<ISassType>();
+        public SassListSeparator Separator { get; set; } = SassListSeparator.Space;
+        
+        internal SassList(IntPtr rawPointer) { /* TODO */ }
 
         /// <summary>
         /// Recursively ensures:

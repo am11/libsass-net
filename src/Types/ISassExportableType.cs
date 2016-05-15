@@ -1,5 +1,4 @@
 ﻿using System;
-using Sass.Compiler;
 using Sass.Compiler.Context;
 
 namespace Sass.Types

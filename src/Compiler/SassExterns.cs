@@ -33,10 +33,25 @@ namespace Sass.Compiler
         internal static extern IntPtr sass_make_color(double @r, double @g, double @b, double @a);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern double sass_color_get_r(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern double sass_color_get_g(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern double sass_color_get_b(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern double sass_color_get_a(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_make_number(double @value, string @unit);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_make_boolean(bool @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool sass_boolean_get_value(IntPtr @value);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_make_null();
@@ -114,10 +129,28 @@ namespace Sass.Compiler
         internal static extern IntPtr sass_make_function_list(int @length);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr sass_make_function(string @signature, IntPtr @cb, IntPtr @cookie);
+        internal static extern IntPtr sass_make_function(string @signature, SassFunctionDelegate @cb, IntPtr @cookie);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_importer_get_cookie(IntPtr @cb);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int sass_value_get_tag(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int sass_list_get_length(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_list_get_value(IntPtr @value, int @index);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern double sass_number_get_value(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_number_get_unit(IntPtr @value);
+
+        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr sass_function_get_cookie(IntPtr @cb);
 
         [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr sass_compiler_get_last_import(IntPtr @compiler);
