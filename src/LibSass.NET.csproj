@@ -78,7 +78,7 @@
     <Exec Command="copy &quot;$(OutDir)x64\libsass.dll&quot; &quot;$(OutDir)libsass.dll&quot;" LogStandardErrorAsError="true" ConsoleToMSBuild="true" />
   </Target>
   <Target Name="BuildLibSass">
-    <MSBuild Targets="Build" Projects="libsass\win\libsass.sln" BuildInParallel="true" Properties="Configuration=$(Configuration);Platform=Win32;OutDir=$(OutDir)x86" />
-    <MSBuild Targets="Build" Projects="libsass\win\libsass.sln" BuildInParallel="true" Properties="Configuration=$(Configuration);Platform=Win64;OutDir=$(OutDir)x64" />
+    <MSBuild Targets="Build" Projects="libsass\win\libsass.sln" BuildInParallel="true" Properties="Configuration=$(Configuration);Platform=Win32;OutDir=$(OutDir)x86\" />
+    <MSBuild Targets="Build" Projects="libsass\win\libsass.sln" BuildInParallel="true" Properties="Configuration=$(Configuration);Platform=Win64;OutDir=$(OutDir)x64\" />
   </Target>
 </Project>
