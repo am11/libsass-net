@@ -18,7 +18,7 @@ build:
   project: LibSass.NET.sln
 
 test_script:
-  - packages\xunit.runner.console.2.1.0\tools\xunit.console tests\bin\%configuration%\LibSass.NET.Tests.dll
+  - packages\xunit.runner.console.2.1.0\tools\xunit.console LibSass.NET.Tests\bin\%configuration%\LibSass.NET.Tests.dll 2>nul
 
 on_success:
   - 7z a libsass-net.zip .

@@ -43,7 +43,7 @@
     <Compile Include="SassTransform.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\LibSass.NET.csproj">
+    <ProjectReference Include="..\..\LibSass.NET\LibSass.NET.csproj">
       <Project>{4ad8b048-7a30-4873-8d11-c0a5273e9458}</Project>
       <Name>LibSass.NET</Name>
     </ProjectReference>

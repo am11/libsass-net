@@ -34,7 +34,7 @@ namespace Sass.Tests
             var assembly = typeof(SpecTests).GetTypeInfo().Assembly;
             var codebase = assembly.CodeBase.Replace("file:///", "");
             var baseDir = GetDirectoryName(GetDirectoryName(GetDirectoryName(codebase)));
-            string spec = Combine(baseDir, "sass-spec", "spec");
+            string spec = Combine(baseDir, "Fixtures", "sass-spec", "spec");
             string[] ignoreSuites =
             {
                 "libsass-todo-issues",

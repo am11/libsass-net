@@ -1,10 +1,11 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSass.NET", "src\LibSass.NET.csproj", "{4AD8B048-7A30-4873-8D11-C0A5273E9458}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSass.NET", "LibSass.NET\LibSass.NET.csproj", "{4AD8B048-7A30-4873-8D11-C0A5273E9458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSass.NET.Tests", "tests\LibSass.NET.Tests.csproj", "{E8696982-9738-4F73-B91F-6F083044937B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSass.NET.Tests", "LibSass.NET.Tests\LibSass.NET.Tests.csproj", "{E8696982-9738-4F73-B91F-6F083044937B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSass.NET.Web", "contrib\LibSass.NET.Web\LibSass.NET.Web.csproj", "{0E7055A4-5821-4DEF-9C7F-4A0045A7F692}"
 EndProject
@@ -12,11 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSass.NET.CommandLine", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contrib", "contrib", "{6F6047F5-965C-4243-B344-0C39B9050352}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{979A473E-7E55-4BB1-914B-7F9495911683}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{84DB8124-096B-4FB9-BA2E-D8493205223B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BF6D6C96-3DCE-4162-83AD-606579095B2A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".SolutionItems", ".SolutionItems", "{BF6D6C96-3DCE-4162-83AD-606579095B2A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
@@ -55,8 +52,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4AD8B048-7A30-4873-8D11-C0A5273E9458} = {979A473E-7E55-4BB1-914B-7F9495911683}
-		{E8696982-9738-4F73-B91F-6F083044937B} = {84DB8124-096B-4FB9-BA2E-D8493205223B}
 		{0E7055A4-5821-4DEF-9C7F-4A0045A7F692} = {6F6047F5-965C-4243-B344-0C39B9050352}
 		{E482CDC3-914C-4B97-BC1D-119DC16B659F} = {6F6047F5-965C-4243-B344-0C39B9050352}
 	EndGlobalSection

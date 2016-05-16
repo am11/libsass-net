@@ -1,6 +1,6 @@
 [submodule "tests/sass-spec"]
-	path = tests/sass-spec
+	path = LibSass.NET.Tests/Fixtures/sass-spec
 	url = https://github.com/sass/sass-spec
 [submodule "libsass"]
-	path = src/libsass
+	path = LibSass
 	url = https://github.com/sass/libsass
