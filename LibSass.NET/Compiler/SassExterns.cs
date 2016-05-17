@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Sass.Compiler.Context;
-using Sass.Compiler.Options;
-using Sass.Types;
+using LibSass.Compiler.Context;
+using LibSass.Compiler.Options;
+using LibSass.Types;
 
 // ReSharper disable InconsistentNaming
 
 // Suggestion to avoid this from happening in future versions:
 // https://resharper-support.jetbrains.com/hc/en-us/community/posts/206675599
 
-namespace Sass.Compiler
+namespace LibSass.Compiler
 {
     internal class SassExterns
     {

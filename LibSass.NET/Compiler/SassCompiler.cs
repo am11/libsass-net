@@ -20,10 +20,10 @@
 
 using System;
 using System.Runtime.InteropServices;
-using Sass.Compiler.Context;
-using Sass.Compiler.Options;
+using LibSass.Compiler.Context;
+using LibSass.Compiler.Options;
 
-namespace Sass.Compiler
+namespace LibSass.Compiler
 {
     public struct SassInfo
     {

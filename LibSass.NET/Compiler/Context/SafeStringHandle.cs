@@ -23,7 +23,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 
-namespace Sass.Compiler.Context
+namespace LibSass.Compiler.Context
 {
         [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
         [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]

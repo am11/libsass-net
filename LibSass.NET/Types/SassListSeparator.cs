@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Sass.Types
+namespace LibSass.Types
 {
     public enum SassListSeparator
     {

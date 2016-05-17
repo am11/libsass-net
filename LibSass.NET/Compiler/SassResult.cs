@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Sass.Compiler
+namespace LibSass.Compiler
 {
     public class SassResult
     {

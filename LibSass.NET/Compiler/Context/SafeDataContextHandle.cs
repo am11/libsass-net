@@ -20,10 +20,10 @@
 
 using System;
 using System.Runtime.ConstrainedExecution;
-using Sass.Compiler.Options;
-using static Sass.Compiler.SassExterns;
+using LibSass.Compiler.Options;
+using static LibSass.Compiler.SassExterns;
 
-namespace Sass.Compiler.Context
+namespace LibSass.Compiler.Context
 {
     internal sealed class SassSafeDataContextHandle : SassSafeContextHandle
     {

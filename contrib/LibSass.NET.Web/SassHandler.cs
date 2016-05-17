@@ -21,10 +21,10 @@
 using System;
 using System.IO;
 using System.Web;
-using Sass.Compiler;
-using Sass.Compiler.Options;
+using LibSass.Compiler;
+using LibSass.Compiler.Options;
 
-namespace Sass.Web
+namespace LibSass.Web
 {
     public class SassHandler : IHttpHandler
     {

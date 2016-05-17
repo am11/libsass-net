@@ -1,4 +1,4 @@
-﻿namespace Sass.Types
+﻿namespace LibSass.Types
 {
     public interface ISassType
     { }

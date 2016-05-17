@@ -7,8 +7,8 @@
     <ProjectGuid>{E482CDC3-914C-4B97-BC1D-119DC16B659F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sass.CommandLine</RootNamespace>
-    <AssemblyName>LibSass.NET.CommandLine</AssemblyName>
+    <RootNamespace>LibSass.Console</RootNamespace>
+    <AssemblyName>LibSass.NET.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -20,7 +20,7 @@
 
 using System.Web.Optimization;
 
-namespace Sass.Web
+namespace LibSass.Web
 {
     public class SassBundle : Bundle
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Sass.Types;
+using LibSass.Types;
 
-namespace Sass.Compiler.Options
+namespace LibSass.Compiler.Options
 {
     public class SassFunction
     {

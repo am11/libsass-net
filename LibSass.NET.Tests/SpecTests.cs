@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Sass.Compiler;
-using Sass.Compiler.Options;
+using LibSass.Compiler;
+using LibSass.Compiler.Options;
 using Xunit;
 using static System.IO.Path;
 using static System.IO.File;
 using static System.IO.Directory;
 
-namespace Sass.Tests
+namespace LibSass.Tests
 {
     public class SpecTests
     {

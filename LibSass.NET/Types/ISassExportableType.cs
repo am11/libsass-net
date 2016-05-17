@@ -1,7 +1,7 @@
 ﻿using System;
-using Sass.Compiler.Context;
+using LibSass.Compiler.Context;
 
-namespace Sass.Types
+namespace LibSass.Types
 {
     internal interface ISassExportableType
     {

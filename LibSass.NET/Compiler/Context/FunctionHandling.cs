@@ -19,11 +19,11 @@
 //SOFTWARE.
 
 using System;
-using Sass.Compiler.Options;
-using Sass.Types;
-using static Sass.Compiler.SassExterns;
+using LibSass.Compiler.Options;
+using LibSass.Types;
+using static LibSass.Compiler.SassExterns;
 
-namespace Sass.Compiler.Context
+namespace LibSass.Compiler.Context
 {
     internal abstract partial class SassSafeContextHandle
     {

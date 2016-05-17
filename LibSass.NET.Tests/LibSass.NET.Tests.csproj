@@ -7,7 +7,7 @@
     <ProjectGuid>{E8696982-9738-4F73-B91F-6F083044937B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sass.Tests</RootNamespace>
+    <RootNamespace>LibSass.Tests</RootNamespace>
     <AssemblyName>LibSass.NET.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

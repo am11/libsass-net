@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Sass.Compiler.Context
+namespace LibSass.Compiler.Context
 {
     internal abstract partial class SassSafeContextHandle
     {

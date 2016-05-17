@@ -1,9 +1,9 @@
 ﻿using System;
-using Sass.Compiler.Context;
-using static Sass.Compiler.SassExterns;
-using static Sass.Compiler.Context.SassSafeContextHandle;
+using LibSass.Compiler.Context;
+using static LibSass.Compiler.SassExterns;
+using static LibSass.Compiler.Context.SassSafeContextHandle;
 
-namespace Sass.Types
+namespace LibSass.Types
 {
     public class SassNumber : ISassType, ISassExportableType
     {

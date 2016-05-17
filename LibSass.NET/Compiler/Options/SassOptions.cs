@@ -1,4 +1,4 @@
-﻿namespace Sass.Compiler.Options
+﻿namespace LibSass.Compiler.Options
 {
     public struct SassOptions : ISassOptions
     {

@@ -1,8 +1,8 @@
-﻿using Sass.Compiler;
-using Sass.Compiler.Options;
+﻿using LibSass.Compiler;
+using LibSass.Compiler.Options;
 using Xunit;
 
-namespace Sass.Tests
+namespace LibSass.Tests
 {
     public class CompileTests
     {

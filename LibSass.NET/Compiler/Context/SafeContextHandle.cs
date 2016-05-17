@@ -23,9 +23,9 @@ using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
-using Sass.Compiler.Options;
+using LibSass.Compiler.Options;
 
-namespace Sass.Compiler.Context
+namespace LibSass.Compiler.Context
 {
     internal delegate void InternalPtrValidityEventHandler();
 

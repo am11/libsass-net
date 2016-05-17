@@ -20,10 +20,10 @@
 
 using System.Linq;
 using System.Web.Optimization;
-using Sass.Compiler;
-using Sass.Compiler.Options;
+using LibSass.Compiler;
+using LibSass.Compiler.Options;
 
-namespace Sass.Web
+namespace LibSass.Web
 {
     public class SassTransform : IBundleTransform
     {

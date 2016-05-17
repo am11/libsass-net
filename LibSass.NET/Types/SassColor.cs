@@ -1,8 +1,8 @@
 ﻿using System;
-using Sass.Compiler.Context;
-using static Sass.Compiler.SassExterns;
+using LibSass.Compiler.Context;
+using static LibSass.Compiler.SassExterns;
 
-namespace Sass.Types
+namespace LibSass.Types
 {
     public class SassColor : ISassType, ISassExportableType
     {

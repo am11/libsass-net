@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sass.Compiler.Context;
-using static Sass.Compiler.SassExterns;
-using static Sass.Types.TypeFactory;
+using LibSass.Compiler.Context;
+using static LibSass.Compiler.SassExterns;
+using static LibSass.Types.TypeFactory;
 
-namespace Sass.Types
+namespace LibSass.Types
 {
     public class SassList : ISassType, ISassExportableType
     {

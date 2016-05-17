@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sass.Types
+namespace LibSass.Types
 {
     public class SassTypeException : Exception
     {

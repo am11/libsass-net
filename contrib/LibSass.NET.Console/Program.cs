@@ -1,16 +1,15 @@
-﻿using System;
-using System.Text;
-using Sass.Compiler;
-using Sass.Compiler.Options;
-using Sass.Types;
+﻿using System.Text;
+using LibSass.Compiler;
+using LibSass.Compiler.Options;
+using LibSass.Types;
 
-namespace Sass.CommandLine
+namespace LibSass.Console
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.Unicode;
+            System.Console.OutputEncoding = Encoding.Unicode;
 
             // this can be a custom type implementing ISassOptions interface.
             SassOptions sassOptions = new SassOptions
@@ -39,8 +38,8 @@ namespace Sass.CommandLine
                     },
                     (currentImport, parentImport, options) =>
                     {
-                        Console.WriteLine(currentImport);
-                        Console.WriteLine(parentImport);
+                        System.Console.WriteLine(currentImport);
+                        System.Console.WriteLine(parentImport);
                         // Note 1: this returns all-valid SassImport array object.
                         //
                         // Note 2: this importer will be called, as the previous one returned null.
@@ -131,8 +130,8 @@ namespace Sass.CommandLine
                     SassString foo = (SassString)values[0];
                     SassNumber bar = (SassNumber)values[1];
 
-                    Console.WriteLine($"foo: {foo}");
-                    Console.WriteLine($"bar: {bar}");
+                    System.Console.WriteLine($"foo: {foo}");
+                    System.Console.WriteLine($"bar: {bar}");
 
                     return new SassString("Trouble here!");
                 },
@@ -141,8 +140,8 @@ namespace Sass.CommandLine
 
             var sass = new SassCompiler(sassOptions);
             var result = sass.Compile();
-            Console.WriteLine(result.ToString());
-            Console.ReadKey();
+            System.Console.WriteLine(result.ToString());
+            System.Console.ReadKey();
         }
 
         private static SassList GetTada(ISassOptions sassOptions, string signature, params ISassType[] sassValues)
@@ -150,8 +149,8 @@ namespace Sass.CommandLine
             SassList list = (SassList)sassValues[0];
             SassMap map = (SassMap)sassValues[1];
 
-            Console.WriteLine($"list: {list}");
-            Console.WriteLine($"map: {map}");
+            System.Console.WriteLine($"list: {list}");
+            System.Console.WriteLine($"map: {map}");
 
             list.Separator = SassListSeparator.Comma;
 
