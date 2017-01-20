@@ -3,19 +3,37 @@
   <metadata>
     <id>libsassnet</id>
     <version>3.3.7</version>
-    <authors>Darren Kopp</authors>
-    <owners>Darren Kopp</owners>
-    <licenseUrl>https://github.com/darrenkopp/libsass-net/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/darrenkopp/libsass-net/</projectUrl>
+    <authors>Darren Kopp,Sass Open Source Foundation</authors>
+    <owners>Sass Open Source Foundation</owners>
+    <licenseUrl>https://github.com/sass/libsass-net/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/sass/libsass-net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Allows you to use the LibSass compiler from .NET</description>
-    <copyright>Copyright © 2016 by Darren Kopp</copyright>
-    <tags>SASS SCSS CSS LibSass</tags>
+    <description>A lightweight wrapper around LibSass</description>
+    <copyright>Copyright © 2017 by Sass Open Source Foundation</copyright>
+    <tags>Sass Scss CSS LibSass</tags>
   </metadata>
   <files>
-    <file src="..\bin\$configuration$\libsass64.dll" target="build\libsass64.dll" />
-    <file src="..\bin\$configuration$\libsass32.dll" target="build\libsass32.dll" />
-    <file src="libsassnet.targets" target="build\libsassnet.targets" />
+    <!-- Windows -->
+    <file src="..\bin\$configuration$\win-x86\libsass.dll" target="runtimes\win-x86\libsass.dll" />
+    <file src="..\bin\$configuration$\win-x64\libsass.dll" target="runtimes\win-x64\libsass.dll" />
+    <!-- /Windows -->
+
+    <!-- Linux -->
+    <!-- TODO
+    <file src="..\bin\$configuration$\linux-x86\libsass.dll" target="runtimes\linux-x86\libsass.dll" />
+    <file src="..\bin\$configuration$\linux-x64\libsass.dll" target="runtimes\linux-x64\libsass.dll" />
+    -->
+    <!-- /Linux -->
+
+    <!-- macOS -->
+    <!-- TODO
+    <file src="..\bin\$configuration$\osx-x64\libsass.dll" target="runtimes\osx-x64\libsass.dll" />
+    -->
+    <!-- /macOS -->
+
     <file src="..\bin\$configuration$\LibSass.NET.dll" target="lib\net40\LibSass.NET.dll" />
+    <file src="LibSass.NET.targets" target="build\LibSass.NET.targets" />
+    <file src="$(MSBuildThisFileDirectory)LibSass.NET.PlatformDetection.targets" targets="build\LibSass.NET.PlatformDetection.targets" />
+    <file src="..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll" target="System.Runtime.InteropServices.RuntimeInformation.dll" />
   </files>
 </package>

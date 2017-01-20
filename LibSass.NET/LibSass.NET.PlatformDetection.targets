@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Detect Platform -->
+  <UsingTask TaskName="OSVersionInformation" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <OSShortName ParameterType="System.String" Output="true" />
+      <OSDescription ParameterType="System.String" Output="true" />
+      <OSArchitecture ParameterType="System.String" Output="true" />
+      <LibSassPlatform ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Reflection" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+          var assembly = Assembly.LoadFrom(@"..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll");
+          Type runtimeType = assembly.GetType("System.Runtime.InteropServices.RuntimeInformation");
+          OSDescription = runtimeType.GetProperty("OSDescription")
+                         .GetValue(null, null).ToString();
+          OSArchitecture = runtimeType.GetProperty("OSArchitecture")
+                          .GetValue(null, null).ToString().ToLowerInvariant();
+
+          if (OSDescription.StartsWith("Microsoft Windows"))
+          {
+              OSShortName = "win";
+
+              if (OSArchitecture == "x86")
+              {
+                  LibSassPlatform = "Win32";
+              }
+              else if (OSArchitecture == "x64")
+              {
+                  LibSassPlatform = "Win64";
+              }
+          }
+        ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="GetOSIdentifiers">
+    <OSVersionInformation>
+      <Output TaskParameter="OSShortName" PropertyName="OSShortName"
+              Condition=" '$(OSShortName)' == '' " />
+      <Output TaskParameter="OSDescription" PropertyName="OSDescription"
+              Condition=" '$(OSDescription)' == '' " />
+      <Output TaskParameter="OSArchitecture" PropertyName="OSArchitecture"
+              Condition=" '$(OSArchitecture)' == '' " />
+      <Output TaskParameter="LibSassPlatform" PropertyName="LibSassPlatform"
+              Condition=" '$(LibSassPlatform)' == '' " />
+    </OSVersionInformation>
+  </Target>
+  <PropertyGroup>
+    <BuildDependsOn>
+    	GetOSIdentifiers;
+    	$(BuildDependsOn);
+    </BuildDependsOn>
+  </PropertyGroup>
+</Project>
