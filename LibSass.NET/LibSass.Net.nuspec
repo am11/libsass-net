@@ -33,7 +33,7 @@
 
     <file src="..\bin\$configuration$\LibSass.NET.dll" target="lib\net40\LibSass.NET.dll" />
     <file src="LibSass.NET.targets" target="build\LibSass.NET.targets" />
-    <file src="$(MSBuildThisFileDirectory)LibSass.NET.PlatformDetection.targets" targets="build\LibSass.NET.PlatformDetection.targets" />
+    <file src="$(MSBuildThisFileDirectory)LibSass.NET.PlatformDetection.targets" target="build\LibSass.NET.PlatformDetection.targets" />
     <file src="..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll" target="System.Runtime.InteropServices.RuntimeInformation.dll" />
   </files>
 </package>

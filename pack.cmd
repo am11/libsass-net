@@ -19,5 +19,5 @@
 
 "%PathToMsBuild32%\MSBuild.exe" LibSass.NET.sln /nologo /v:n /m:4 /p:Configuration=Release
 
-.nuget\NuGet Pack "LibSass.NET\LibSass.NET.csproj" 					-Properties Configuration=Release
-.nuget\NuGet Pack "contrib\LibSass.NET.Web\LibSass.NET.Web.csproj" 	-Properties Configuration=Release
+.nuget\NuGet Pack "LibSass.NET\LibSass.NET.csproj" -Properties Configuration=Release;SolutionDir=..\
+.nuget\NuGet Pack "contrib\LibSass.NET.Web\LibSass.NET.Web.csproj" 	-Properties Configuration=Release;SolutionDir=..\

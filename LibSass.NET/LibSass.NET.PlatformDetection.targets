@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Detect Platform -->
+  <PropertyGroup>
+
+  </PropertyGroup>
   <UsingTask TaskName="OSVersionInformation" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <OSShortName ParameterType="System.String" Output="true" />
@@ -34,7 +37,7 @@
         ]]></Code>
     </Task>
   </UsingTask>
-  <Target Name="GetOSIdentifiers">
+  <Target Name="GetOSIdentifiers" BeforeTargets="_CheckForInvalidConfigurationAndPlatform;Build">
     <OSVersionInformation>
       <Output TaskParameter="OSShortName" PropertyName="OSShortName"
               Condition=" '$(OSShortName)' == '' " />
@@ -45,11 +48,30 @@
       <Output TaskParameter="LibSassPlatform" PropertyName="LibSassPlatform"
               Condition=" '$(LibSassPlatform)' == '' " />
     </OSVersionInformation>
+  <ItemGroup>
+  <IntermediateAssembly Remove="$(IntermediateOutputPath)$(TargetName)$(TargetExt)" />
+</ItemGroup>
+    <PropertyGroup Condition=" '$(LibSassNetBuild)' == 'true' ">
+      <OutputPath>$(SolutionDir)bin\$(Configuration)\$(OSShortName)-$(OSArchitecture)\</OutputPath>
+      <OutDir>$(OutputPath)</OutDir>
+    <IntermediateOutputPath>$(OutputPath)obj\$(Configuration)\</IntermediateOutputPath>
+      <!--
+        PublishDir is set in Microsoft.Common.CurrentVersion.targets and starts with $(OutputPath).
+        Since we've reset $(OutputPath), we need to reset $(PublishDir).  We have to do this in a
+        <PropertyGroup /> because the <Output /> from <GetOutputPath /> can't append text.
+      -->
+      <PublishDir>$(OutputPath)app.publish\</PublishDir>
+      <!--
+        If <OutputPath /> is not set in a top-level <PropertyGroup /> then $(_InvalidConfigurationError)
+        is set to 'true' which will cause a build error.  However, we've set $(OutputPath) in a task 
+        just before _CheckForInvalidConfigurationAndPlatform ran so we can turn off the error now that
+        we know everything is set properly. 
+      -->
+      <_InvalidConfigurationError>false</_InvalidConfigurationError>
+      <_InvalidConfigurationWarning>false</_InvalidConfigurationWarning>
+    </PropertyGroup>
+    <ItemGroup>
+      <IntermediateAssembly Include="$(IntermediateOutputPath)$(TargetName)$(TargetExt)" />
+    </ItemGroup>
   </Target>
-  <PropertyGroup>
-    <BuildDependsOn>
-    	GetOSIdentifiers;
-    	$(BuildDependsOn);
-    </BuildDependsOn>
-  </PropertyGroup>
 </Project>
